@@ -23,11 +23,11 @@ public class BoardController {
 	}
 	
 
-    @RequestMapping("/freeboard")
-    public String freeboardList(Model model) {
-        List<Board> boardList = boardService.selectFreeBoardList();
-        model.addAttribute("boardList", boardList);
-        return "board/freeboard";
-    }
+	// db 연동
+	/*
+	 * @RequestMapping("/freeboard") public String freeboardList(Model model) {
+	 * List<Board> boardList = boardService.selectFreeBoardList();
+	 * model.addAttribute("boardList", boardList); return "board/freeboard"; }
+	 */
 
 }

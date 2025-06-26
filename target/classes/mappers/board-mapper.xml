@@ -29,7 +29,7 @@
 	<select id="selectFreeBoardList" resultType="Board">
 	    SELECT BOARD_NO, BOARD_TITLE, MEMBER_NO, CREATE_DATE, READ_COUNT, LIKE_COUNT
 	    FROM BOARD
-	    WHERE BOARD_TYPE = '자유'
+	    WHERE BOARD_TYPE = 'FREE'
 	    ORDER BY BOARD_NO DESC
 	 </select>
 			

@@ -24,5 +24,10 @@ public class MemberController {
 	public String signUp() {
 		return "member/signUp";
 	}
+	
+	@GetMapping("/myPage")
+	public String myPage() {
+		return "member/myPage";
+	}
 
 }
