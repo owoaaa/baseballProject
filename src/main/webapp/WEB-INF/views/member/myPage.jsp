@@ -64,29 +64,7 @@
 <body class="bg-gray-50 text-gray-800">
 
 <!-- 상단 네비게이션 -->
-<header class="w-full shadow-sm bg-white sticky top-0 z-50">
-  <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-    <h1 class="text-2xl font-bold text-blue-600">Baseball Community</h1>
-    <nav class="flex items-center space-x-6 text-gray-700">
-      <a href="/" title="홈" class="hover:text-blue-500">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
-             viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-          <path stroke-linecap="round" stroke-linejoin="round"
-                d="M3 9.75L12 3l9 6.75V21a1.5 1.5 0 01-1.5 1.5H4.5A1.5 1.5 0 013 21V9.75z" />
-        </svg>
-      </a>
-      <a href="/member/logout" title="로그아웃" class="hover:text-blue-500">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
-             viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-          <path stroke-linecap="round" stroke-linejoin="round"
-                d="M15.75 9V5.25A2.25 2.25 0 0013.5 3H5.25A2.25 2.25 0 003 5.25v13.5A2.25 2.25 0 005.25 21H13.5a2.25 2.25 0 002.25-2.25V15" />
-          <path stroke-linecap="round" stroke-linejoin="round"
-                d="M18 12H9m0 0l3-3m-3 3l3 3" />
-        </svg>
-      </a>
-    </nav>
-  </div>
-</header>
+<jsp:include page="/WEB-INF/views/common/header.jsp" />
 
 <main class="max-w-7xl mx-auto mt-8 flex">
   <!-- 사이드바 -->
@@ -170,7 +148,57 @@
 
   <!-- 본문 콘텐츠 -->
   <section class="w-3/4 bg-white p-6 rounded shadow-sm space-y-6">
-    <div id="home" class="content-section">마이페이지 홈입니다.</div>
+    <div id="home" class="content-section space-y-6">
+    <h2 class="text-2xl font-semibold">마이페이지</h2>
+
+    <!-- 회원 기본 정보 -->
+    <div class="bg-gray-100 p-4 rounded shadow-sm">
+      <h3 class="text-lg font-semibold mb-2">회원 정보</h3>
+      <ul class="space-y-1 text-sm">
+        <li><strong>닉네임:</strong> <span class="text-gray-700">야바에새봄</span></li>
+        <li><strong>이메일:</strong> <span class="text-gray-700">yabae@example.com</span></li>
+        <li><strong>가입일:</strong> <span class="text-gray-700">2025-06-01</span></li>
+        <li><strong>마지막 로그인:</strong> <span class="text-gray-700">2025-07-08 12:41</span></li>
+      </ul>
+    </div>
+
+    <!-- 포인트/등급 요약 -->
+    <div class="bg-white p-4 rounded shadow-sm border border-gray-200">
+      <h3 class="text-lg font-semibold mb-2">포인트 및 등급</h3>
+      <div class="flex items-center justify-between">
+        <div>
+          <p><strong>현재 포인트:</strong> <span class="text-blue-600 font-bold">1,240P</span></p>
+          <p><strong>현재 등급:</strong> <span class="text-green-600 font-bold">프로</span></p>
+        </div>
+        <div class="w-1/2">
+          <div class="w-full bg-gray-200 rounded-full h-4">
+            <div class="bg-blue-500 h-4 rounded-full" style="width: 62%;"></div>
+          </div>
+          <p class="text-xs text-gray-500 mt-1 text-right">다음 등급까지 380P 남음</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 최근 활동 -->
+    <div class="bg-gray-50 p-4 rounded shadow-sm">
+      <h3 class="text-lg font-semibold mb-2">최근 활동</h3>
+      <ul class="list-disc list-inside text-sm text-gray-700 space-y-1">
+        <li>2025-07-07 [자유게시판] "오늘 경기 재밌었음ㅋㅋ"</li>
+        <li>2025-07-06 [KBO게시판] "두산 요즘 분위기 좋다"</li>
+        <li>2025-07-05 댓글 작성 "ㅋㅋㅋ 인정"</li>
+      </ul>
+    </div>
+
+    <!-- 알림 -->
+    <div class="bg-white p-4 rounded shadow-sm border border-gray-200">
+      <h3 class="text-lg font-semibold mb-2">공지 및 알림</h3>
+      <ul class="text-sm text-gray-700 space-y-1">
+        <li><a href="#" class="text-blue-600 hover:underline">[공지] 커뮤니티 규칙 변경 안내</a></li>
+        <li><a href="#" class="text-blue-600 hover:underline">[이벤트] 출석체크 이벤트 시작!</a></li>
+      </ul>
+    </div>
+  </div>  
+  
     <div id="editInfo" class="content-section hidden">
         <h2 class="text-xl font-semibold mb-4">내 정보 수정</h2>
         <form action="/member/updateInfo" method="post" class="space-y-4 max-w-md">

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="teamMapper">
+
+  <select id="selectKboTeamList" resultType="kr.swj.baseball.team.model.dto.Team">
+    SELECT 
+      KBO_TEAM_NO AS teamNo,
+      KBO_TEAM_NAME AS teamName,
+      KBO_TEAM_CODE AS teamCode
+    FROM KBO
+  </select>
+
+  <select id="selectMlbTeamList" resultType="kr.swj.baseball.team.model.dto.Team">
+    SELECT 
+      MLB_TEAM_NO AS teamNo,
+      MLB_TEAM_NAME AS teamName,
+      MLB_TEAM_CODE AS teamCode
+    FROM MLB
+  </select>
+  
+  <insert id="testInsertKboTeam">
+  INSERT INTO KBO (KBO_TEAM_NO, KBO_TEAM_NAME, KBO_TEAM_CODE)
+  VALUES (999, '테스트팀', 'TEST')
+</insert>
+
+</mapper>
