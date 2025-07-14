@@ -7,6 +7,7 @@
 	</settings>
 	<typeAliases>
 		<typeAlias type="kr.swj.baseball.board.model.dto.Board" alias="Board"/>
+		<typeAlias type="kr.swj.baseball.board.model.dto.Reply" alias="Reply"/>
 		<typeAlias type="kr.swj.baseball.member.model.dto.Member" alias="Member"/>
 		<typeAlias type="kr.swj.baseball.team.model.dto.Team" alias="Team"/>
 	</typeAliases>

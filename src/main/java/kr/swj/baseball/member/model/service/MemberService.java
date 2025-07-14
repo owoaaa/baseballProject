@@ -12,5 +12,10 @@ public interface MemberService {
 	 int checkId(String memberId);
 	 // 닉네임 중복 검사
 	 int checkNick(String memberNick);
+	 // 마이페이지 이동
+	 Member selectMemberByNo(int memberNo);
+	 
+	 // 마이페이지 정보 수정
+	 int updateTeamInfo(Member member);
 
 }

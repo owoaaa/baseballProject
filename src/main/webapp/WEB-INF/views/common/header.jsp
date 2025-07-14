@@ -4,6 +4,10 @@
     <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
       <h1 class="text-2xl font-bold text-blue-600">⚾ Baseball Community</h1>
       <nav class="flex items-center space-x-6 text-gray-700">
+        <!-- 로그인 멤버 닉네임 -->
+            <span class="text-sm text-gray-800 mr-4 hidden sm:inline">
+              ${sessionScope.loginMember.memberNick} 님
+            </span>
         <a href="/" title="홈" class="hover:text-blue-500">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round" d="M3 9.75L12 3l9 6.75V21a1.5 1.5 0 01-1.5 1.5H4.5A1.5 1.5 0 013 21V9.75z" />
@@ -29,6 +33,7 @@
           </c:when>
 
           <c:otherwise>
+            
             <!-- 마이페이지 버튼 -->
             <a href="/member/myPage" title="마이페이지" class="hover:text-blue-500">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-6">

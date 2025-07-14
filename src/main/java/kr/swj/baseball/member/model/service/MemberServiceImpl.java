@@ -58,4 +58,15 @@ public class MemberServiceImpl implements MemberService{
 	public int checkNick(String memberNick) {
 	    return dao.checkNick(memberNick);
 	}
+	// 마이페이지 이동
+	@Override
+	public Member selectMemberByNo(int memberNo) {
+	    return dao.selectMemberByNo(memberNo);
+	}
+	
+	// 마이페이지 정보 수정
+	@Override
+	public int updateTeamInfo(Member member) {
+	    return dao.updateTeamInfo(member);
+	}
 }
