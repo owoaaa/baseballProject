@@ -10,25 +10,33 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import kr.swj.baseball.board.model.dto.Board;
 import kr.swj.baseball.board.model.dto.PageInfo;
+import kr.swj.baseball.board.model.dto.Reply;
 import kr.swj.baseball.board.model.service.BoardService;
 import kr.swj.baseball.board.model.service.KboRankingService;
 import kr.swj.baseball.board.model.service.KboStatService;
 import kr.swj.baseball.board.model.service.MlbRankingService;
 import kr.swj.baseball.main.dto.MlbTeamRank;
 import kr.swj.baseball.main.dto.TeamRank;
+import kr.swj.baseball.member.model.dto.Member;
 
 @Controller
 @RequestMapping("/board")
@@ -221,5 +229,156 @@ public class BoardController {
 
 	    return "board/board";
 	}
+	
+	// 게시글 상세 페이지
+	@GetMapping("/detail")
+	public String boardDetail(@RequestParam("no") int boardNo, Model model, HttpSession session) {
+	    Board board = boardService.selectBoardDetail(boardNo);
+	    if (board == null) {
+	        model.addAttribute("message", "게시글이 존재하지 않습니다.");
+	        model.addAttribute("messageType", "error");
+	        return "redirect:/board/list";
+	    }
+
+	    boardService.increaseViewCount(boardNo); // 조회수 증가
+
+	    List<Reply> replyList = boardService.selectReplyList(boardNo);
+
+	    model.addAttribute("board", board);
+	    model.addAttribute("boardType", board.getBoardType());
+	    model.addAttribute("replyList", replyList);
+	    model.addAttribute("loginMember", (Member) session.getAttribute("loginMember"));
+
+	    return "board/boardDetail";
+	}
+	
+	// 좋아요 ajax
+	@PostMapping("/like")
+	@ResponseBody
+	public Map<String, Object> toggleLike(@RequestParam("no") int boardNo,
+	                                      @RequestParam("type") String boardType,
+	                                      HttpSession session) {
+
+	    Member loginMember = (Member) session.getAttribute("loginMember");
+	    Map<String, Object> result = new HashMap<>();
+
+	    if (loginMember == null) {
+	        result.put("error", "unauthenticated");
+	        return result;
+	    }
+
+	    int memberNo = loginMember.getMemberNo();
+
+	    boolean liked = boardService.toggleLike(boardNo, memberNo); // true면 좋아요됨, false면 취소됨
+	    int likeCount = boardService.getLikeCount(boardNo);
+
+	    result.put("liked", liked);
+	    result.put("likeCount", likeCount);
+	    result.put("boardType", boardType);
+
+	    return result;
+	}
+	
+	// 게시글 작성 페이지 이동
+	@GetMapping("/write")
+	public String showWriteForm(@RequestParam String type, Model model) {
+	    model.addAttribute("boardType", type);
+	    return "board/boardWrite"; // boardWrite.jsp
+	}
+	
+	// 게시글 작성
+	@PostMapping("/write")
+	public String insertBoard(@ModelAttribute Board board, HttpSession session, RedirectAttributes ra) {
+	    Member loginMember = (Member) session.getAttribute("loginMember");
+
+	    if (loginMember == null) {
+	        ra.addFlashAttribute("message", "로그인 후 이용해주세요.");
+	        ra.addFlashAttribute("messageType", "error");
+	        return "redirect:/";
+	    }
+
+	    board.setMemberNo(loginMember.getMemberNo());
+
+	    int result = boardService.insertBoard(board);
+
+	    if (result > 0) {
+	        ra.addFlashAttribute("message", "게시글이 등록되었습니다.");
+	        return "redirect:/board/detail?no=" + board.getBoardNo(); // 또는 목록 페이지로 이동 가능
+	    } else {
+	        ra.addFlashAttribute("message", "게시글 등록 실패");
+	        ra.addFlashAttribute("messageType", "error");
+	        return "redirect:/board/write?type=" + board.getBoardType();
+	    }
+	}
+	
+	// 게시글 수정 페이지 이동
+	@GetMapping("/edit")
+	public String editForm(@RequestParam("no") int boardNo, Model model, HttpSession session, RedirectAttributes ra) {
+	    Member loginMember = (Member) session.getAttribute("loginMember");
+	    
+	    // 로그인하지 않았거나 세션 없음
+	    if (loginMember == null) {
+	        ra.addFlashAttribute("message", "로그인 후 이용해주세요.");
+	        return "redirect:/";
+	    }
+
+	    // 게시글 조회
+	    Board board = boardService.selectBoardDetail(boardNo);
+
+	    if (board == null || board.getBoardSt().equals("Y")) {
+	        ra.addFlashAttribute("message", "게시글이 존재하지 않습니다.");
+	        return "redirect:/board/list?type=FREE";
+	    }
+
+	    // 작성자 본인이 아닌 경우
+	    if (board.getMemberNo() != loginMember.getMemberNo()) {
+	        ra.addFlashAttribute("message", "수정 권한이 없습니다.");
+	        return "redirect:/board/detail?no=" + boardNo;
+	    }
+
+	    model.addAttribute("board", board);
+	    return "board/boardEdit";
+	}
+	
+	// 게시글 수정 처리
+	@PostMapping("/edit")
+	public String editBoard(Board board, HttpSession session, RedirectAttributes ra) {
+	    Member loginMember = (Member) session.getAttribute("loginMember");
+
+	    if (loginMember == null) {
+	        ra.addFlashAttribute("message", "로그인 후 이용해주세요.");
+	        return "redirect:/";
+	    }
+
+	    board.setMemberNo(loginMember.getMemberNo());
+
+	    int result = boardService.updateBoard(board);
+
+	    if (result > 0) {
+	        ra.addFlashAttribute("message", "게시글이 수정되었습니다.");
+	        return "redirect:/board/detail?no=" + board.getBoardNo();
+	    } else {
+	        ra.addFlashAttribute("message", "게시글 수정에 실패했습니다.");
+	        return "redirect:/board/edit?no=" + board.getBoardNo();
+	    }
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 }

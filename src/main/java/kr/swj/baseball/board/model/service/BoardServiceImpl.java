@@ -58,10 +58,70 @@ public class BoardServiceImpl implements BoardService{
     public int getMyReplyCount(int memberNo) {
         return dao.getMyReplyCount(memberNo);
     }
-
+    // 내가 쓴 댓글
     @Override
     public List<Reply> getMyReplyList(int memberNo, PageInfo pi) {
         return dao.getMyReplyList(memberNo, pi);
     }
+    
+    
+    // 게시글 상세 조회
+    @Override
+    public Board selectBoardDetail(int boardNo) {
+        return dao.selectBoardDetail(boardNo);
+    }
+    // 조회수
+    @Override
+    public void increaseViewCount(int boardNo) {
+        dao.increaseViewCount(boardNo);
+    }
+    // 댓글 목록 조회
+    @Override
+    public List<Reply> selectReplyList(int boardNo) {
+        return dao.selectReplyList(boardNo);
+    }
+    
+    // 좋아요 ajax
+    @Override
+    public boolean toggleLike(int boardNo, int memberNo) {
+        boolean alreadyLiked = dao.checkLike(boardNo, memberNo);
+        if (alreadyLiked) {
+            dao.deleteLike(boardNo, memberNo);
+            return false;
+        } else {
+            dao.insertLike(boardNo, memberNo);
+            return true;
+        }
+    }
 
+    @Override
+    public int getLikeCount(int boardNo) {
+        return dao.getLikeCount(boardNo);
+    }
+
+    // 댓글 작성
+    @Override
+    public void insertReply(Reply reply) {
+        dao.insertReply(reply);
+    }
+    
+    // 게시글 작성
+    @Override
+    public int insertBoard(Board board) {
+        int result = dao.insertBoard(board);
+
+        // insert 성공 시 시퀀스 번호 셋팅
+        if (result > 0) {
+            int boardNo = dao.selectInsertedBoardNo();
+            board.setBoardNo(boardNo);
+        }
+
+        return result;
+    }
+    
+    // 게시글 수정
+    @Override
+    public int updateBoard(Board board) {
+        return dao.updateBoard(board);
+    }
 }

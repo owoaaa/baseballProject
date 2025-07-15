@@ -9,12 +9,12 @@ import kr.swj.baseball.board.model.dto.Reply;
 public interface BoardService {
 	List<Board> selectFreeBoardList();
 	
-  int getBoardCount(String boardType); // 총 게시글 수
-  List<Board> selectBoardList(PageInfo pi, String boardType); // 목록
+    int getBoardCount(String boardType); // 총 게시글 수
+    List<Board> selectBoardList(PageInfo pi, String boardType); // 목록
   
-  // 마이페이지 최근 활동 조회
-  List<Board> selectRecentBoards(int memberNo);
-  List<Reply> selectRecentReplies(int memberNo);
+    // 마이페이지 최근 활동 조회
+    List<Board> selectRecentBoards(int memberNo);
+    List<Reply> selectRecentReplies(int memberNo);
 	  
 	  
   	// 게시글
@@ -26,5 +26,25 @@ public interface BoardService {
     int getMyReplyCount(int memberNo);
 
     List<Reply> getMyReplyList(int memberNo, PageInfo pi);
+    
+    // 게시글 상세
+    Board selectBoardDetail(int boardNo);
+    // 조회수 증가
+    void increaseViewCount(int boardNo);
+    // 댓글 목록 조회
+    List<Reply> selectReplyList(int boardNo);
+    
+    // 좋아요 ajax
+    boolean toggleLike(int boardNo, int memberNo);
+    int getLikeCount(int boardNo);
+    
+    // 댓글작성
+    void insertReply(Reply reply);
+    
+    // 게시글 작성
+    int insertBoard(Board board);
+    
+    // 게시글 수정
+    int updateBoard(Board board);
 
 }
