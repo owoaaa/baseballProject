@@ -70,9 +70,12 @@
     el: document.querySelector('#editor'),
     height: '400px',
     initialEditType: 'markdown',
-    previewStyle: 'vertical',
-    initialValue: `${board.boardContent}`
+    previewStyle: 'vertical'
   });
+
+  // 게시글 수정 시 기존 내용을 에디터에 주입 - 
+  const originalContent = `<c:out value="${board.boardContent}" escapeXml="false" />`;
+  editor.setHTML(originalContent);
 
   function submitEditorContent() {
     const content = editor.getHTML();

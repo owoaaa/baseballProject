@@ -7,6 +7,17 @@
   <meta charset="UTF-8">
   <title>Baseball Community</title>
   <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- 채팅방 스크롤바 보조 스타일 -->
+  <style>
+    .scrollbar-hide::-webkit-scrollbar {
+      display: none;
+    }
+    .scrollbar-hide {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
 </head>
 <body class="bg-white text-gray-800">
 
@@ -21,6 +32,35 @@
         <p class="text-gray-600 mb-6">실시간 게시판, 팀 정보, 경기 토론까지!</p>
         <a href="#" class="inline-block px-6 py-3 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition">지금 시작하기</a>
       </div>
+
+      <!-- 채팅방 영역 -->
+      <div>
+        <h2 class="text-xl font-semibold mb-4">참여 중인 채팅방</h2>
+
+        <!-- 참여중 채팅방 슬라이드 -->
+        <div class="flex overflow-x-auto space-x-4 pb-2 scrollbar-hide">
+          <c:forEach var="room" items="${myChatRooms}">
+            <div class="min-w-[250px] bg-white shadow rounded-lg p-4 border border-gray-200 hover:shadow-md transition cursor-pointer"
+                onclick="location.href='/chat/room/${room.roomNo}'">
+              <div class="flex items-center space-x-3">
+                <img src="${room.teamLogoUrl}" alt="팀로고" class="w-10 h-10 rounded-full object-cover" />
+                <div>
+                  <p class="font-bold text-sm truncate">${room.roomName}</p>
+                  <p class="text-xs text-gray-500">${room.participantCount}명 참여 중</p>
+                </div>
+              </div>
+              <div class="mt-3 text-sm text-gray-600 truncate">
+                ${fn:escapeXml(room.lastMessage)}
+              </div>
+            </div>
+          </c:forEach>
+        </div>
+
+          <!-- 전체 채팅방 더보기 버튼 -->
+          <div class="text-right mt-4">
+            <a href="/chat/list" class="text-blue-600 hover:underline text-sm">채팅방 더보기 &gt;</a>
+          </div>
+        </div>
 
       <!-- KBO 순위 -->
       <div class="ranking-box mt-10">

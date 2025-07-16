@@ -27,6 +27,20 @@
 			<version>1.18.24</version>
 			<scope>provided</scope>
 		</dependency>
+		
+		<!-- WebSocket core -->
+		<dependency>
+		  <groupId>org.springframework</groupId>
+		  <artifactId>spring-websocket</artifactId>
+		  <version>${org.springframework-version}</version>
+		</dependency>
+		
+		<!-- 메시지 브로커 처리용 -->
+		<dependency>
+		  <groupId>org.springframework</groupId>
+		  <artifactId>spring-messaging</artifactId>
+		  <version>${org.springframework-version}</version>
+		</dependency>
 		<!-- kbo순위 -->
 		<dependency>
 		  <groupId>org.jsoup</groupId>
