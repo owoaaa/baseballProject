@@ -1,5 +1,8 @@
 package kr.swj.baseball.chat.controller;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -17,12 +20,16 @@ public class ChatMessageController {
     @Autowired
     private SimpMessagingTemplate messagingTemplate;
 
-    @MessageMapping("/chat/message") // 클라이언트는 /pub/chat/message로 전송
+    @MessageMapping("/chat/message")
     public void handleMessage(ChatMessage message) {
-        // DB 저장
+        
+        // 날짜 포맷팅해서 문자열로 세팅
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String now = LocalDateTime.now().format(formatter);
+        message.setSendDate(now);
+
         chatService.saveChatMessage(message);
 
-        // 구독자에게 메시지 전송
         messagingTemplate.convertAndSend(
             "/sub/chat/room/" + message.getRoomNo(),
             message

@@ -40,22 +40,27 @@
 <jsp:include page="/WEB-INF/views/common/footer.jsp" />
 
 <script>
+  let lastMessageDate = null;
   const roomNo = ${room.roomNo};
   const nickname = "${sessionScope.loginMember.memberNick}";
-
+  console.log("nickname 변수 값:", nickname);
   let stompClient = null;
+
+  function parseKoreanDateString(dateStr) {
+    if (!dateStr) return null;
+    const fixed = dateStr.replace(" ", "T");
+    return new Date(fixed);
+  }
 
   function connect() {
     const socket = new SockJS("/ws-stomp");
     stompClient = Stomp.over(socket);
 
-    stompClient.connect({}, function(frame) {
-      stompClient.subscribe("/sub/chat/room/" + roomNo, function(message) {
+    stompClient.connect({}, function (frame) {
+      stompClient.subscribe("/sub/chat/room/" + roomNo, function (message) {
         const msg = JSON.parse(message.body);
         showMessage(msg);
       });
-
-      // 입장 알림은 서버에서 SYSTEM 메시지로 따로 전송됨
     });
   }
 
@@ -77,40 +82,83 @@
   function showMessage(msg) {
     const chatArea = document.getElementById("chatArea");
 
+    // 메시지 값이 없으면 출력할 필요 없음
+    if (!msg || !msg.message) return;
+
+    // 날짜 파싱
+    let sendDate;
+    try {
+      sendDate = new Date(msg.sendDate?.replace(" ", "T"));
+      if (isNaN(sendDate.getTime())) throw new Error("Invalid date");
+    } catch (e) {
+      console.error("날짜 파싱 실패:", msg.sendDate);
+      sendDate = new Date(); // fallback
+    }
+
+    const currentDateStr = sendDate.toISOString().split("T")[0];
+
+    // 날짜 구분선
+    if (lastMessageDate !== currentDateStr) {
+      lastMessageDate = currentDateStr;
+
+      const dateDivider = document.createElement("div");
+      dateDivider.className = "text-center text-gray-500 text-sm my-4 flex items-center justify-center gap-2";
+      dateDivider.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+        </svg>
+        ${sendDate.getFullYear()}년 ${sendDate.getMonth() + 1}월 ${sendDate.getDate()}일 ${["일", "월", "화", "수", "목", "금", "토"][sendDate.getDay()]}요일
+      `;
+      chatArea.appendChild(dateDivider);
+    }
+
+    const hours = sendDate.getHours();
+    const minutes = sendDate.getMinutes().toString().padStart(2, '0');
+    const ampm = hours < 12 ? "오전" : "오후";
+    const hour12 = hours % 12 === 0 ? 12 : hours % 12;
+    const formattedTime = `${ampm} ${hour12}:${minutes}`;
+
     const bubble = document.createElement("div");
-    bubble.className = "max-w-[75%] px-4 py-2 rounded-lg";
+    bubble.className = "max-w-[75%] px-4 py-2 rounded-lg break-words";
 
     if (msg.messageType === "SYSTEM") {
       bubble.classList.add("mx-auto", "bg-yellow-100", "text-gray-700", "text-center", "text-sm");
       bubble.textContent = msg.message;
     } else if (msg.nickname === nickname) {
-      bubble.classList.add("ml-auto", "bg-blue-200");
-      bubble.textContent = msg.message;
+      bubble.classList.add("ml-auto", "bg-yellow-100", "text-black", "relative");
+      bubble.innerHTML = `
+        <div>${msg.message}</div>
+        <div class="text-xs text-gray-600 text-right mt-1">${formattedTime}</div>
+      `;
     } else {
-      bubble.classList.add("mr-auto", "bg-white", "border");
-      bubble.innerHTML = `<strong>${msg.nickname}:</strong> ${msg.message}`;
+      bubble.classList.add("mr-auto", "bg-white", "border", "relative");
+      bubble.innerHTML = `
+        <div><strong>${msg.nickname}</strong><br>${msg.message}</div>
+        <div class="text-xs text-gray-500 text-right mt-1">${formattedTime}</div>
+      `;
     }
 
     chatArea.appendChild(bubble);
     chatArea.scrollTop = chatArea.scrollHeight;
   }
 
+  function leaveRoom(roomNo) {
+    fetch("/chat/leave?roomNo=" + roomNo, {
+      method: "POST"
+    })
+      .then(res => {
+        if (res.ok) {
+          window.location.href = "/chat/list";
+        } else {
+          res.text().then(msg => alert(msg));
+        }
+      });
+  }
+
   window.addEventListener("DOMContentLoaded", () => {
     connect();
   });
 
-  function leaveRoom(roomNo) {
-    fetch("/chat/leave?roomNo=" + roomNo, {
-        method: "POST"
-    })
-    .then(res => {
-        if (res.ok) {
-        window.location.href = "/chat/list";
-        } else {
-        res.text().then(msg => alert(msg));
-        }
-    });
-  }
 </script>
 
 </body>

@@ -43,11 +43,15 @@ public class ChatController {
         // 채팅방 기본 정보 조회 (이건 아직 구현 안 되어 있다면 null 처리 또는 별도 로직)
         ChatRoomPreview room = chatService.getRoomPreviewByRoomNo(roomNo);
 
-        // 최근 7일 메시지 조회
+        if (room == null) {
+            model.addAttribute("message", "존재하지 않는 채팅방입니다.");
+            model.addAttribute("messageType", "error");
+            return "redirect:/chat/list";
+        }
         model.addAttribute("room", room);
         model.addAttribute("messageList", chatService.getRecentMessages(roomNo));
 
-        return "chat/chatRoom"; // JSP 파일명: /WEB-INF/views/chat/chatRoom.jsp
+        return "chat/chatRoom";
     }
     
     

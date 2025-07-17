@@ -8,7 +8,7 @@ import lombok.ToString;
 @Setter
 @ToString
 public class ChatRoomPreview {
-    private Long roomNo;
+    private int roomNo;
     private String roomName;
     private String teamLogoUrl;
     private String lastMessage;

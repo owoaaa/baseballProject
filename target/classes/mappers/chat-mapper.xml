@@ -6,137 +6,133 @@
 <mapper namespace="chatMapper">
 
   <select id="selectMyChatRooms" resultType="ChatRoomPreview">
-	    SELECT
-	        cr.ROOM_NO,
-	        cr.ROOM_TYPE,
-	        cr.MLB_TEAM_NO,
-	        cr.KBO_TEAM_NO,
-	        t.TEAM_NAME AS roomName,
-	        t.TEAM_LOGO_URL AS teamLogoUrl,
-	        (SELECT COUNT(*) FROM CHATMEMBER cm WHERE cm.ROOM_NO = cr.ROOM_NO) AS participantCount,
-	        (SELECT MESSAGE_CONTENT FROM (
-	            SELECT MESSAGE_CONTENT
-	            FROM CHATMESSAGE
-	            WHERE ROOM_NO = cr.ROOM_NO AND MESSAGE_TYPE = 'TEXT'
-	            ORDER BY SEND_DATE DESC
-	        ) WHERE ROWNUM = 1) AS lastMessage
-	    FROM CHATROOM cr
-	    JOIN CHATMEMBER cm ON cr.ROOM_NO = cm.ROOM_NO
-	    LEFT JOIN (
-	        SELECT MLB_TEAM_NO AS TEAM_NO, MLB_TEAM_NAME AS TEAM_NAME, MLB_TEAM_LOGO AS TEAM_LOGO_URL FROM MLB
-	        UNION ALL
-	        SELECT KBO_TEAM_NO, KBO_TEAM_NAME, KBO_TEAM_LOGO FROM KBO
-	    ) t ON t.TEAM_NO = NVL(cr.MLB_TEAM_NO, cr.KBO_TEAM_NO)
-	    WHERE cm.MEMBER_NO = #{memberNo}
-	</select>
-	
-	<select id="selectAllChatRooms" resultType="ChatRoomPreview">
-	    SELECT
-	        cr.ROOM_NO,
-	        cr.ROOM_TYPE,
-	        cr.MLB_TEAM_NO,
-	        cr.KBO_TEAM_NO,
-	        t.TEAM_NAME AS roomName,
-	        t.TEAM_LOGO_URL AS teamLogoUrl,
-	        (SELECT COUNT(*) FROM CHATMEMBER cm WHERE cm.ROOM_NO = cr.ROOM_NO) AS participantCount,
-	        EXISTS (
+    SELECT
+        cr.ROOM_NO,
+        cr.ROOM_TYPE,
+        cr.MLB_TEAM_NO,
+        cr.KBO_TEAM_NO,
+        t.TEAM_NAME AS roomName,
+        (SELECT COUNT(*) FROM CHATMEMBER cm WHERE cm.ROOM_NO = cr.ROOM_NO) AS participantCount,
+        (SELECT MESSAGE_CONTENT FROM (
+            SELECT MESSAGE_CONTENT
+            FROM CHATMESSAGE
+            WHERE ROOM_NO = cr.ROOM_NO AND MESSAGE_TYPE = 'TEXT'
+            ORDER BY SEND_DATE DESC
+        ) WHERE ROWNUM = 1) AS lastMessage
+    FROM CHATROOM cr
+    JOIN CHATMEMBER cm ON cr.ROOM_NO = cm.ROOM_NO
+    LEFT JOIN (
+        SELECT MLB_TEAM_NO AS TEAM_NO, MLB_TEAM_NAME AS TEAM_NAME FROM MLB
+        UNION ALL
+        SELECT KBO_TEAM_NO, KBO_TEAM_NAME FROM KBO
+    ) t ON t.TEAM_NO = NVL(cr.MLB_TEAM_NO, cr.KBO_TEAM_NO)
+    WHERE cm.MEMBER_NO = #{memberNo}
+  </select>
+
+  <select id="selectAllChatRooms" resultType="ChatRoomPreview">
+		  SELECT
+	    cr.ROOM_NO,
+	    cr.ROOM_TYPE,
+	    cr.MLB_TEAM_NO,
+	    cr.KBO_TEAM_NO,
+	    NVL(m.MLB_TEAM_NAME, k.KBO_TEAM_NAME) AS roomName,
+	    (SELECT COUNT(*) FROM CHATMEMBER cm WHERE cm.ROOM_NO = cr.ROOM_NO) AS participantCount,
+	    CASE
+	        WHEN EXISTS (
 	            SELECT 1 FROM CHATMEMBER cm
 	            WHERE cm.ROOM_NO = cr.ROOM_NO AND cm.MEMBER_NO = #{memberNo}
-	        ) AS joined
-	    FROM CHATROOM cr
-	    LEFT JOIN (
-	        SELECT MLB_TEAM_NO AS TEAM_NO, MLB_TEAM_NAME AS TEAM_NAME, MLB_TEAM_LOGO AS TEAM_LOGO_URL FROM MLB
-	        UNION ALL
-	        SELECT KBO_TEAM_NO, KBO_TEAM_NAME, KBO_TEAM_LOGO FROM KBO
-	    ) t ON t.TEAM_NO = NVL(cr.MLB_TEAM_NO, cr.KBO_TEAM_NO)
+	        ) THEN 1
+	        ELSE 0
+	    END AS joined
+	FROM CHATROOM cr
+	LEFT JOIN MLB m ON cr.MLB_TEAM_NO = m.MLB_TEAM_NO
+	LEFT JOIN KBO k ON cr.KBO_TEAM_NO = k.KBO_TEAM_NO
+	ORDER BY cr.ROOM_NO
 	</select>
-	
-	
-	<insert id="insertChatMember">
-	    INSERT INTO CHATMEMBER (ROOM_NO, MEMBER_NO)
-	    SELECT #{roomNo}, #{memberNo}
-	    FROM DUAL
-	    WHERE NOT EXISTS (
-	        SELECT 1 FROM CHATMEMBER
-	        WHERE ROOM_NO = #{roomNo}
-	        AND MEMBER_NO = #{memberNo}
-	    )
-	</insert>
-	
-	<insert id="insertSystemMessage">
-	    INSERT INTO CHATMESSAGE (
-	        MESSAGE_NO,
-	        MESSAGE_CONTENT,
-	        MEMBER_NO,
-	        SEND_DATE,
-	        ROOM_NO,
-	        MESSAGE_TYPE
-	    )
-	    VALUES (
-	        CHATMESSAGE_SEQ.NEXTVAL,
-	        #{content},
-	        #{memberNo},
-	        SYSDATE,
-	        #{roomNo},
-	        'SYSTEM'
-	    )
-	</insert>
-	
-	<delete id="deleteChatMember">
-	    DELETE FROM CHATMEMBER
-	    WHERE ROOM_NO = #{roomNo}
-	    AND MEMBER_NO = #{memberNo}
-	</delete>
-	
-	<insert id="insertChatMessage">
-	    INSERT INTO CHATMESSAGE (
-	        MESSAGE_NO,
-	        MESSAGE_CONTENT,
-	        MEMBER_NO,
-	        SEND_DATE,
-	        ROOM_NO,
-	        MESSAGE_TYPE
-	    )
-	    VALUES (
-	        CHATMESSAGE_SEQ.NEXTVAL,
-	        #{message},
-	        #{memberNo},
-	        SYSDATE,
-	        #{roomNo},
-	        #{messageType}
-	    )
-	</insert>
-	
-	<select id="selectRoomPreviewByRoomNo" parameterType="int" resultType="ChatRoomPreview">
-	    SELECT
-	        cr.ROOM_NO,
-	        cr.ROOM_TYPE,
-	        cr.MLB_TEAM_NO,
-	        cr.KBO_TEAM_NO,
-	        t.TEAM_NAME AS roomName,
-	        t.TEAM_LOGO_URL AS teamLogoUrl,
-	        (SELECT COUNT(*) FROM CHATMEMBER cm WHERE cm.ROOM_NO = cr.ROOM_NO) AS participantCount
-	    FROM CHATROOM cr
-	    LEFT JOIN (
-	        SELECT MLB_TEAM_NO AS TEAM_NO, MLB_TEAM_NAME AS TEAM_NAME, MLB_TEAM_LOGO AS TEAM_LOGO_URL FROM MLB
-	        UNION ALL
-	        SELECT KBO_TEAM_NO, KBO_TEAM_NAME, KBO_TEAM_LOGO FROM KBO
-	    ) t ON t.TEAM_NO = NVL(cr.MLB_TEAM_NO, cr.KBO_TEAM_NO)
-	    WHERE cr.ROOM_NO = #{roomNo}
+
+  <insert id="insertChatMember">
+    INSERT INTO CHATMEMBER (ROOM_NO, MEMBER_NO)
+    SELECT #{roomNo}, #{memberNo}
+    FROM DUAL
+    WHERE NOT EXISTS (
+        SELECT 1 FROM CHATMEMBER
+        WHERE ROOM_NO = #{roomNo}
+        AND MEMBER_NO = #{memberNo}
+    )
+  </insert>
+
+  <insert id="insertSystemMessage">
+    INSERT INTO CHATMESSAGE (
+        MESSAGE_NO,
+        MESSAGE_CONTENT,
+        MEMBER_NO,
+        SEND_DATE,
+        ROOM_NO,
+        MESSAGE_TYPE
+    )
+    VALUES (
+        CHATMESSAGE_SEQ.NEXTVAL,
+        #{content},
+        #{memberNo},
+        SYSDATE,
+        #{roomNo},
+        'SYSTEM'
+    )
+  </insert>
+
+  <delete id="deleteChatMember">
+    DELETE FROM CHATMEMBER
+    WHERE ROOM_NO = #{roomNo}
+    AND MEMBER_NO = #{memberNo}
+  </delete>
+
+  <insert id="insertChatMessage">
+    INSERT INTO CHATMESSAGE (
+        MESSAGE_NO,
+        MESSAGE_CONTENT,
+        MEMBER_NO,
+        SEND_DATE,
+        ROOM_NO,
+        MESSAGE_TYPE
+    )
+    VALUES (
+        CHATMESSAGE_SEQ.NEXTVAL,
+        #{message},
+        #{memberNo},
+        SYSDATE,
+        #{roomNo},
+        #{messageType}
+    )
+  </insert>
+
+  <select id="selectRoomPreviewByRoomNo" parameterType="int" resultType="ChatRoomPreview">
+	  SELECT
+	    cr.ROOM_NO,
+	    cr.ROOM_TYPE,
+	    cr.MLB_TEAM_NO,
+	    cr.KBO_TEAM_NO,
+	    CASE 
+	      WHEN cr.ROOM_TYPE LIKE 'MLB%' THEN (SELECT MLB_TEAM_NAME FROM MLB WHERE MLB_TEAM_NO = cr.MLB_TEAM_NO)
+	      WHEN cr.ROOM_TYPE LIKE 'KBO%' THEN (SELECT KBO_TEAM_NAME FROM KBO WHERE KBO_TEAM_NO = cr.KBO_TEAM_NO)
+	      ELSE '공용방'
+	    END AS roomName,
+	    (SELECT COUNT(*) FROM CHATMEMBER cm WHERE cm.ROOM_NO = cr.ROOM_NO) AS participantCount
+	  FROM CHATROOM cr
+	  WHERE cr.ROOM_NO = #{roomNo}
 	</select>
-	
-	<select id="selectRecentMessages" parameterType="int" resultType="ChatMessage">
-	    SELECT
-	        MESSAGE_NO,
-	        MESSAGE_CONTENT,
-	        MEMBER_NO,
-	        SEND_DATE,
-	        ROOM_NO,
-	        MESSAGE_TYPE
-	    FROM CHATMESSAGE
-	    WHERE ROOM_NO = #{roomNo}
-	      AND SEND_DATE >= SYSDATE - 7
-	    ORDER BY SEND_DATE
-	</select>
+
+  <select id="selectRecentMessages" parameterType="int" resultType="ChatMessage">
+    SELECT
+        MESSAGE_NO,
+        MESSAGE_CONTENT,
+        MEMBER_NO,
+        SEND_DATE,
+        ROOM_NO,
+        MESSAGE_TYPE
+    FROM CHATMESSAGE
+    WHERE ROOM_NO = #{roomNo}
+      AND SEND_DATE >= SYSDATE - 7
+    ORDER BY SEND_DATE
+  </select>
 
 </mapper>

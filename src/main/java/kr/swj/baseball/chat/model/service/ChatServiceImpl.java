@@ -1,6 +1,9 @@
 package kr.swj.baseball.chat.model.service;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,7 +26,18 @@ public class ChatServiceImpl implements ChatService{
     
     @Override
     public List<ChatRoomPreview> getAllChatRoomsWithJoinStatus(int memberNo) {
-        return dao.selectAllChatRooms(memberNo);
+        List<ChatRoomPreview> originalList = dao.selectAllChatRooms(memberNo);
+
+        Set<Integer> seen = new HashSet<>();
+        List<ChatRoomPreview> filteredList = new ArrayList<>();
+
+        for (ChatRoomPreview room : originalList) {
+            if (seen.add(room.getRoomNo())) {
+                filteredList.add(room);
+            }
+        }
+
+        return filteredList;
     }
     
     

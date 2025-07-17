@@ -26,7 +26,6 @@
         <c:forEach var="room" items="${chatRoomList}">
           <div class="bg-white rounded-lg shadow p-4 border border-gray-200 flex flex-col justify-between">
             <div class="flex items-center space-x-4">
-              <img src="${room.teamLogoUrl}" alt="팀로고" class="w-12 h-12 rounded-full object-cover" />
               <div>
                 <p class="text-lg font-semibold">${room.roomName}</p>
                 <p class="text-sm text-gray-500">${room.participantCount}명 참여 중</p>

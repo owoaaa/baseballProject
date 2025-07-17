@@ -11,6 +11,7 @@
 		<typeAlias type="kr.swj.baseball.member.model.dto.Member" alias="Member"/>
 		<typeAlias type="kr.swj.baseball.team.model.dto.Team" alias="Team"/>
 		<typeAlias type="kr.swj.baseball.chat.model.dto.ChatRoomPreview" alias="ChatRoomPreview"/>
+		<typeAlias type="kr.swj.baseball.chat.model.dto.ChatMessage" alias="ChatMessage"/>
 	</typeAliases>
 	
 	<mappers>
