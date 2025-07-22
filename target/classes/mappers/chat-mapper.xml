@@ -120,19 +120,31 @@
 	  FROM CHATROOM cr
 	  WHERE cr.ROOM_NO = #{roomNo}
 	</select>
+	
+	<resultMap id="chatMessageMap" type="ChatMessage">
+	  <result property="messageNo" column="MESSAGE_NO"/>
+	  <result property="message" column="MESSAGE_CONTENT"/>
+	  <result property="memberNo" column="MEMBER_NO"/>
+	  <result property="sendDate" column="SEND_DATE"/>
+	  <result property="roomNo" column="ROOM_NO"/>
+	  <result property="messageType" column="MESSAGE_TYPE"/>
+	  <result property="nickname" column="NICKNAME"/>
+	</resultMap>
 
-  <select id="selectRecentMessages" parameterType="int" resultType="ChatMessage">
-    SELECT
-        MESSAGE_NO,
-        MESSAGE_CONTENT,
-        MEMBER_NO,
-        SEND_DATE,
-        ROOM_NO,
-        MESSAGE_TYPE
-    FROM CHATMESSAGE
-    WHERE ROOM_NO = #{roomNo}
-      AND SEND_DATE >= SYSDATE - 7
-    ORDER BY SEND_DATE
-  </select>
+  <select id="selectRecentMessages" parameterType="int" resultMap="chatMessageMap">
+	  SELECT
+	      M.MESSAGE_NO,
+	      M.MESSAGE_CONTENT,
+	      M.MEMBER_NO,
+	      M.SEND_DATE,
+	      M.ROOM_NO,
+	      M.MESSAGE_TYPE,
+	      MEM.MEMBER_NICK AS NICKNAME
+	  FROM CHATMESSAGE M
+	  JOIN MEMBER MEM ON M.MEMBER_NO = MEM.MEMBER_NO
+	  WHERE M.ROOM_NO = #{roomNo}
+	    AND M.SEND_DATE >= SYSDATE - 7
+	  ORDER BY M.SEND_DATE
+	</select>
 
 </mapper>

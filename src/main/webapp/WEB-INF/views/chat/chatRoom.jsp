@@ -1,5 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <!DOCTYPE html>
 <html lang="ko">
@@ -40,11 +41,30 @@
 <jsp:include page="/WEB-INF/views/common/footer.jsp" />
 
 <script>
+  const messageList = [
+    <c:forEach items="${messageList}" var="msg" varStatus="loop">
+      {
+        messageNo: ${msg.messageNo},
+        roomNo: ${msg.roomNo},
+        memberNo: ${msg.memberNo},
+        nickname: '<c:out value="${msg.nickname}" />',
+        message: '<c:out value="${msg.message}" />',
+        sendDate: "${msg.sendDate}",
+        messageType: "${msg.messageType}"
+      }<c:if test="${!loop.last}">,</c:if>
+    </c:forEach>
+  ];
+</script>
+
+<script>
   let lastMessageDate = null;
   const roomNo = ${room.roomNo};
+  const memberNo = "${sessionScope.loginMember.memberNo}";
   const nickname = "${sessionScope.loginMember.memberNick}";
   console.log("nickname 변수 값:", nickname);
   let stompClient = null;
+
+  // JSP에서 전달받은 기존 메시지들을 화면에 표시하는 함수
 
   function parseKoreanDateString(dateStr) {
     if (!dateStr) return null;
@@ -70,6 +90,7 @@
 
     const message = {
       roomNo: roomNo,
+      memberNo : memberNo,
       nickname: nickname,
       message: content,
       messageType: "TEXT"
@@ -79,67 +100,66 @@
     document.getElementById("messageInput").value = "";
   }
 
-  function showMessage(msg) {
-    const chatArea = document.getElementById("chatArea");
+  function showMessage(message) {
+      console.log("받은 메시지:", message);
+      console.log("현재 사용자 memberNo:", memberNo);
+      console.log("메시지 보낸 사용자 memberNo:", message.memberNo);
+      
+      const chatArea = document.getElementById("chatArea");
+      if (!chatArea) {
+          console.error("chatArea 요소를 찾을 수 없습니다!");
+          return;
+      }
 
-    // 메시지 값이 없으면 출력할 필요 없음
-    if (!msg || !msg.message) return;
+      // 날짜 포맷 처리
+      const rawDate = message.sendDate;
+      const isoDate = rawDate ? rawDate.replace(" ", "T") : null;
+      const dateObj = isoDate ? new Date(isoDate) : new Date();
+      const formattedTime = dateObj.toLocaleTimeString("ko-KR", { hour: '2-digit', minute: '2-digit' });
+      
+      // 날짜만 추출 (YYYY-MM-DD 형식)
+      const messageDate = dateObj.toISOString().split('T')[0];
+      
+      // 날짜가 바뀌었으면 날짜 표시 (기존 lastMessageDate 변수 사용)
+      if (lastMessageDate !== messageDate) {
+          const dateDisplayHtml = 
+            '<div style="text-align: center; margin: 20px 0 10px 0;">' +
+              '<span style="background-color: #f3f4f6; padding: 4px 12px; border-radius: 12px; font-size: 12px; color: #666;">' +
+                dateObj.toLocaleDateString("ko-KR", { year: 'numeric', month: 'long', day: 'numeric' }) +
+              '</span>' +
+            '</div>';
+          chatArea.insertAdjacentHTML("beforeend", dateDisplayHtml);
+          lastMessageDate = messageDate;
+      }
 
-    // 날짜 파싱
-    let sendDate;
-    try {
-      sendDate = new Date(msg.sendDate?.replace(" ", "T"));
-      if (isNaN(sendDate.getTime())) throw new Error("Invalid date");
-    } catch (e) {
-      console.error("날짜 파싱 실패:", msg.sendDate);
-      sendDate = new Date(); // fallback
-    }
+      const isOwnMessage = String(message.memberNo) === String(memberNo);
+      
+      console.log("isOwnMessage:", isOwnMessage);
+      console.log("message.nickname:", message.nickname);
+      console.log("message.message:", message.message);
 
-    const currentDateStr = sendDate.toISOString().split("T")[0];
+      // 카카오톡 스타일 메시지 (문자열 연결 사용)
+      let messageHtml = '<div style="margin-bottom: 8px; ' + (isOwnMessage ? 'text-align: right;' : 'text-align: left;') + '">';
+      
+      // 상대방 메시지인 경우에만 닉네임 표시
+      if (!isOwnMessage) {
+          messageHtml += '<div style="font-size: 12px; color: #666; margin-bottom: 4px; margin-left: 8px;">' + (message.nickname || '알 수 없음') + '</div>';
+      }
+      
+      messageHtml += '<div style="display: inline-block; max-width: 250px; padding: 8px 12px; border-radius: 18px; word-wrap: break-word; ' + 
+                    (isOwnMessage ? 'background-color: #007bff; color: white;' : 'background-color: #f1f3f4; color: black;') + '">' +
+                    (message.message || '메시지 없음') +
+                    '</div>';
+      
+      messageHtml += '<div style="font-size: 10px; color: #999; margin-top: 2px; ' + 
+                    (isOwnMessage ? 'margin-right: 8px;' : 'margin-left: 8px;') + '">' + 
+                    formattedTime + 
+                    '</div>';
+      
+      messageHtml += '</div>';
 
-    // 날짜 구분선
-    if (lastMessageDate !== currentDateStr) {
-      lastMessageDate = currentDateStr;
-
-      const dateDivider = document.createElement("div");
-      dateDivider.className = "text-center text-gray-500 text-sm my-4 flex items-center justify-center gap-2";
-      dateDivider.innerHTML = `
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-        </svg>
-        ${sendDate.getFullYear()}년 ${sendDate.getMonth() + 1}월 ${sendDate.getDate()}일 ${["일", "월", "화", "수", "목", "금", "토"][sendDate.getDay()]}요일
-      `;
-      chatArea.appendChild(dateDivider);
-    }
-
-    const hours = sendDate.getHours();
-    const minutes = sendDate.getMinutes().toString().padStart(2, '0');
-    const ampm = hours < 12 ? "오전" : "오후";
-    const hour12 = hours % 12 === 0 ? 12 : hours % 12;
-    const formattedTime = `${ampm} ${hour12}:${minutes}`;
-
-    const bubble = document.createElement("div");
-    bubble.className = "max-w-[75%] px-4 py-2 rounded-lg break-words";
-
-    if (msg.messageType === "SYSTEM") {
-      bubble.classList.add("mx-auto", "bg-yellow-100", "text-gray-700", "text-center", "text-sm");
-      bubble.textContent = msg.message;
-    } else if (msg.nickname === nickname) {
-      bubble.classList.add("ml-auto", "bg-yellow-100", "text-black", "relative");
-      bubble.innerHTML = `
-        <div>${msg.message}</div>
-        <div class="text-xs text-gray-600 text-right mt-1">${formattedTime}</div>
-      `;
-    } else {
-      bubble.classList.add("mr-auto", "bg-white", "border", "relative");
-      bubble.innerHTML = `
-        <div><strong>${msg.nickname}</strong><br>${msg.message}</div>
-        <div class="text-xs text-gray-500 text-right mt-1">${formattedTime}</div>
-      `;
-    }
-
-    chatArea.appendChild(bubble);
-    chatArea.scrollTop = chatArea.scrollHeight;
+      chatArea.insertAdjacentHTML("beforeend", messageHtml);
+      chatArea.scrollTop = chatArea.scrollHeight;
   }
 
   function leaveRoom(roomNo) {
@@ -156,6 +176,8 @@
   }
 
   window.addEventListener("DOMContentLoaded", () => {
+    // 기존 메시지 표시
+    messageList.forEach(showMessage);
     connect();
   });
 

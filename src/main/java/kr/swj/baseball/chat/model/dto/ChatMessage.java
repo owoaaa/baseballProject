@@ -10,6 +10,7 @@ import lombok.ToString;
 public class ChatMessage {
     private int roomNo;
     private int memberNo;
+    private int messageNo;
     private String nickname;
     private String message;
     private String messageType; // TEXT, SYSTEM
