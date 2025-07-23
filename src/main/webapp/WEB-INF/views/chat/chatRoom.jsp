@@ -38,6 +38,7 @@
 
 </main>
 
+<c:set var="message" value="" scope="request" />
 <jsp:include page="/WEB-INF/views/common/footer.jsp" />
 
 <script>
@@ -77,8 +78,8 @@
     stompClient = Stomp.over(socket);
 
     stompClient.connect({}, function (frame) {
-      stompClient.subscribe("/sub/chat/room/" + roomNo, function (message) {
-        const msg = JSON.parse(message.body);
+      stompClient.subscribe("/sub/chat/room/" + roomNo, function (socketMessage) {  // message → socketMessage로 변경
+        const msg = JSON.parse(socketMessage.body);
         showMessage(msg);
       });
     });
@@ -88,22 +89,24 @@
     const content = document.getElementById("messageInput").value.trim();
     if (!content) return;
 
-    const message = {
+    const messageData = {  // message → messageData로 변경
       roomNo: roomNo,
-      memberNo : memberNo,
+      memberNo: memberNo,
       nickname: nickname,
       message: content,
       messageType: "TEXT"
     };
 
-    stompClient.send("/pub/chat/message", {}, JSON.stringify(message));
+    stompClient.send("/pub/chat/message", {}, JSON.stringify(messageData));
     document.getElementById("messageInput").value = "";
   }
 
-  function showMessage(message) {
-      console.log("받은 메시지:", message);
+  function showMessage(msg) {
+      console.log("받은 메시지:", msg);
       console.log("현재 사용자 memberNo:", memberNo);
-      console.log("메시지 보낸 사용자 memberNo:", message.memberNo);
+      console.log("메시지 보낸 사용자 memberNo:", msg.memberNo);
+      console.log("msg.messageType:", msg.messageType);  // 이 줄 추가
+    console.log("msg.messageType === 'SYSTEM':", msg.messageType === "SYSTEM");
       
       const chatArea = document.getElementById("chatArea");
       if (!chatArea) {
@@ -112,7 +115,7 @@
       }
 
       // 날짜 포맷 처리
-      const rawDate = message.sendDate;
+      const rawDate = msg.sendDate;
       const isoDate = rawDate ? rawDate.replace(" ", "T") : null;
       const dateObj = isoDate ? new Date(isoDate) : new Date();
       const formattedTime = dateObj.toLocaleTimeString("ko-KR", { hour: '2-digit', minute: '2-digit' });
@@ -132,23 +135,37 @@
           lastMessageDate = messageDate;
       }
 
-      const isOwnMessage = String(message.memberNo) === String(memberNo);
+      // 시스템 메시지인 경우 (입장/퇴장 메시지)
+      if (msg.messageType === "SYSTEM") {
+          const systemMessageHtml = 
+            '<div style="text-align: center; margin: 8px 0;">' +
+              '<span style="background-color: #e5e7eb; padding: 6px 12px; border-radius: 12px; font-size: 12px; color: #6b7280;">' +
+                (msg.message || '시스템 메시지') +
+              '</span>' +
+            '</div>';
+          chatArea.insertAdjacentHTML("beforeend", systemMessageHtml);
+          chatArea.scrollTop = chatArea.scrollHeight;
+          return;
+      }
+
+      // 일반 채팅 메시지 처리
+      const isOwnMessage = String(msg.memberNo) === String(memberNo);
       
       console.log("isOwnMessage:", isOwnMessage);
-      console.log("message.nickname:", message.nickname);
-      console.log("message.message:", message.message);
+      console.log("msg.nickname:", msg.nickname);
+      console.log("msg.message:", msg.message);
 
       // 카카오톡 스타일 메시지 (문자열 연결 사용)
       let messageHtml = '<div style="margin-bottom: 8px; ' + (isOwnMessage ? 'text-align: right;' : 'text-align: left;') + '">';
       
       // 상대방 메시지인 경우에만 닉네임 표시
       if (!isOwnMessage) {
-          messageHtml += '<div style="font-size: 12px; color: #666; margin-bottom: 4px; margin-left: 8px;">' + (message.nickname || '알 수 없음') + '</div>';
+          messageHtml += '<div style="font-size: 12px; color: #666; margin-bottom: 4px; margin-left: 8px;">' + (msg.nickname || '알 수 없음') + '</div>';
       }
       
       messageHtml += '<div style="display: inline-block; max-width: 250px; padding: 8px 12px; border-radius: 18px; word-wrap: break-word; ' + 
                     (isOwnMessage ? 'background-color: #007bff; color: white;' : 'background-color: #f1f3f4; color: black;') + '">' +
-                    (message.message || '메시지 없음') +
+                    (msg.message || '메시지 없음') +
                     '</div>';
       
       messageHtml += '<div style="font-size: 10px; color: #999; margin-top: 2px; ' + 
