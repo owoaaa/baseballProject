@@ -42,13 +42,12 @@
           <c:forEach var="room" items="${myChatRooms}">
             <div class="min-w-[250px] bg-white shadow rounded-lg p-4 border border-gray-200 hover:shadow-md transition cursor-pointer"
                 onclick="location.href='/chat/room/${room.roomNo}'">
-              <div class="flex items-center space-x-3">
-                <img src="${room.teamLogoUrl}" alt="팀로고" class="w-10 h-10 rounded-full object-cover" />
-                <div>
-                  <p class="font-bold text-sm truncate">${room.roomName}</p>
-                  <p class="text-xs text-gray-500">${room.participantCount}명 참여 중</p>
-                </div>
+              
+              <div>
+                <p class="text-lg font-semibold truncate">${room.roomName}</p>
+                <p class="text-sm text-gray-500">${room.participantCount}명 참여 중</p>
               </div>
+
               <div class="mt-3 text-sm text-gray-600 truncate">
                 ${fn:escapeXml(room.lastMessage)}
               </div>

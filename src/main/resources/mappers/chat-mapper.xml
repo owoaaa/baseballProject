@@ -6,28 +6,35 @@
 <mapper namespace="chatMapper">
 
   <select id="selectMyChatRooms" resultType="ChatRoomPreview">
-    SELECT
-        cr.ROOM_NO,
-        cr.ROOM_TYPE,
-        cr.MLB_TEAM_NO,
-        cr.KBO_TEAM_NO,
-        t.TEAM_NAME AS roomName,
-        (SELECT COUNT(*) FROM CHATMEMBER cm WHERE cm.ROOM_NO = cr.ROOM_NO) AS participantCount,
-        (SELECT MESSAGE_CONTENT FROM (
-            SELECT MESSAGE_CONTENT
-            FROM CHATMESSAGE
-            WHERE ROOM_NO = cr.ROOM_NO AND MESSAGE_TYPE = 'TEXT'
-            ORDER BY SEND_DATE DESC
-        ) WHERE ROWNUM = 1) AS lastMessage
-    FROM CHATROOM cr
-    JOIN CHATMEMBER cm ON cr.ROOM_NO = cm.ROOM_NO
-    LEFT JOIN (
-        SELECT MLB_TEAM_NO AS TEAM_NO, MLB_TEAM_NAME AS TEAM_NAME FROM MLB
-        UNION ALL
-        SELECT KBO_TEAM_NO, KBO_TEAM_NAME FROM KBO
-    ) t ON t.TEAM_NO = NVL(cr.MLB_TEAM_NO, cr.KBO_TEAM_NO)
-    WHERE cm.MEMBER_NO = #{memberNo}
-  </select>
+	  SELECT
+	    cr.ROOM_NO,
+	    cr.ROOM_TYPE,
+	    cr.MLB_TEAM_NO,
+	    cr.KBO_TEAM_NO,
+	    t.TEAM_NAME AS roomName,
+	    (SELECT COUNT(*) 
+	     FROM CHATMEMBER cm2 
+	     WHERE cm2.ROOM_NO = cr.ROOM_NO) AS participantCount,
+	    (SELECT MESSAGE_CONTENT FROM (
+	        SELECT MESSAGE_CONTENT
+	        FROM CHATMESSAGE
+	        WHERE ROOM_NO = cr.ROOM_NO AND MESSAGE_TYPE = 'TEXT'
+	        ORDER BY SEND_DATE DESC
+	    ) WHERE ROWNUM = 1) AS lastMessage
+	  FROM CHATROOM cr
+	  JOIN CHATMEMBER cm ON cr.ROOM_NO = cm.ROOM_NO
+	  LEFT JOIN (
+	      SELECT 'MLB-' || MLB_TEAM_NO AS TEAM_ID, MLB_TEAM_NAME AS TEAM_NAME FROM MLB
+	      UNION ALL
+	      SELECT 'KBO-' || KBO_TEAM_NO AS TEAM_ID, KBO_TEAM_NAME AS TEAM_NAME FROM KBO
+	  ) t 
+	    ON t.TEAM_ID = 
+	        CASE 
+	          WHEN cr.ROOM_TYPE IN ('MLB_TEAM', 'MLB_COMMON') THEN 'MLB-' || cr.MLB_TEAM_NO
+	          WHEN cr.ROOM_TYPE IN ('KBO_TEAM', 'KBO_COMMON') THEN 'KBO-' || cr.KBO_TEAM_NO
+	        END
+	  WHERE cm.MEMBER_NO = #{memberNo}
+	</select>
 
   <select id="selectAllChatRooms" resultType="ChatRoomPreview">
 		  SELECT
