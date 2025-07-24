@@ -20,21 +20,32 @@
   <!-- 사이드바 -->
   <jsp:include page="/WEB-INF/views/common/sidebar.jsp" />
 
+  
+
   <!-- 채팅 영역 -->
   <section class="md:col-span-3 space-y-4 bg-white rounded shadow p-4">
-    <div class="flex justify-between items-center mb-6">
-      <h2 class="text-2xl font-bold">${room.roomName}</h2>
+    
+  <div class="flex justify-between items-center mb-6">
+    <h2 class="text-2xl font-bold">${room.roomName}</h2>
+    <div class="flex gap-2">
+      <a href="/chat/list" class="px-4 py-2 bg-blue-600 text-white text-sm rounded hover:bg-blue-700">
+        채팅방 목록으로
+      </a>
       <button onclick="leaveRoom(${room.roomNo})"
-              class="px-4 py-2 text-sm bg-gray-200 text-gray-800 rounded hover:bg-gray-300">나가기</button>
+              class="px-4 py-2 text-sm bg-gray-200 text-gray-800 rounded hover:bg-gray-300">
+        나가기
+      </button>
     </div>
+  </div>
 
-    <div id="chatArea" class="h-[400px] overflow-y-auto border rounded p-4 space-y-2 bg-gray-50"></div>
+  <div id="chatArea" class="h-[400px] overflow-y-auto border rounded p-4 space-y-2 bg-gray-50"></div>
 
-    <form onsubmit="sendMessage(); return false;" class="mt-4 flex">
-      <input id="messageInput" type="text" class="flex-1 border p-2 rounded-l" placeholder="메시지를 입력하세요" required />
-      <button type="submit" class="bg-blue-600 text-white px-4 rounded-r hover:bg-blue-700">전송</button>
-    </form>
-  </section>
+  <form onsubmit="sendMessage(); return false;" class="mt-4 flex">
+    <input id="messageInput" type="text" class="flex-1 border p-2 rounded-l" placeholder="메시지를 입력하세요" required />
+    <button type="submit" class="bg-blue-600 text-white px-4 rounded-r hover:bg-blue-700">전송</button>
+  </form>
+
+</section>
 
 </main>
 
