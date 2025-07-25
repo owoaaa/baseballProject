@@ -212,20 +212,34 @@ public class BoardController {
 	
 	@GetMapping("/list")
 	public String boardList(@RequestParam("type") String boardType,
-	                        @RequestParam(value="page", defaultValue="1") int currentPage,
-	                        Model model) {
+	                        @RequestParam(value = "page", defaultValue = "1") int currentPage,
+	                        @RequestParam(value = "keyword", required = false) String keyword,
+	                        Model model, HttpSession session) {
 
-	    int listCount = boardService.getBoardCount(boardType);
+	    Member loginMember = (Member) session.getAttribute("loginMember");
+
+	    // 검색 기록 저장
+	    if (loginMember != null && keyword != null && !keyword.trim().isEmpty()) {
+	        boardService.saveSearchHistory(loginMember.getMemberNo(), keyword);
+	    }
+
+	    int listCount = (keyword == null || keyword.trim().isEmpty()) 
+	        ? boardService.getBoardCount(boardType)
+	        : boardService.getSearchCount(boardType, keyword);
+
 	    int pageLimit = 10;
 	    int boardLimit = 10;
 
 	    PageInfo pi = new PageInfo(listCount, currentPage, pageLimit, boardLimit);
 
-	    List<Board> boardList = boardService.selectBoardList(pi, boardType);
+	    List<Board> boardList = (keyword == null || keyword.trim().isEmpty())
+	        ? boardService.selectBoardList(pi, boardType)
+	        : boardService.searchBoardList(pi, boardType, keyword);
 
 	    model.addAttribute("boardList", boardList);
 	    model.addAttribute("pageInfo", pi);
 	    model.addAttribute("boardType", boardType);
+	    model.addAttribute("keyword", keyword);
 
 	    return "board/board";
 	}
@@ -363,7 +377,18 @@ public class BoardController {
 	    }
 	}
 	
-	
+	/** 최근 검색어 조회용
+	 * @param session
+	 * @return
+	 */
+	@GetMapping("/recentSearch")
+	@ResponseBody
+	public List<String> getRecentSearches(HttpSession session) {
+	    Member loginMember = (Member) session.getAttribute("loginMember");
+	    if (loginMember == null) return new ArrayList<>();
+
+	    return boardService.getRecentSearches(loginMember.getMemberNo());
+	}
 	
 	
 	

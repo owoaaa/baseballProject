@@ -46,5 +46,28 @@ public interface BoardService {
     
     // 게시글 수정
     int updateBoard(Board board);
+    
+    // 최근 검색어 조회
+    List<String> getRecentSearches(int memberNo);
+
+    // 검색 기록 저장
+    int saveSearchHistory(int memberNo, String keyword);
+
+    // 게시판 검색 결과
+    List<Board> searchBoardList(PageInfo pi, String boardType, String keyword);
+
+    // 검색된 게시글 수 조회
+    int getSearchCount(String boardType, String keyword);
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
 }

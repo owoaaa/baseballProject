@@ -1,6 +1,8 @@
 package kr.swj.baseball.board.model.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -124,4 +126,45 @@ public class BoardServiceImpl implements BoardService{
     public int updateBoard(Board board) {
         return dao.updateBoard(board);
     }
+    
+    
+    @Override
+    public List<String> getRecentSearches(int memberNo) {
+        return dao.selectRecentSearches(memberNo);
+    }
+
+    @Override
+    public int saveSearchHistory(int memberNo, String keyword) {
+        return dao.insertSearchHistory(memberNo, keyword);
+    }
+
+    @Override
+    public List<Board> searchBoardList(PageInfo pi, String boardType, String keyword) {
+        Map<String, Object> param = new HashMap<>();
+        param.put("startRow", pi.getStartRow());
+        param.put("endRow", pi.getEndRow());
+        param.put("boardType", boardType);
+        param.put("keyword", keyword);
+        return dao.searchBoardList(param);
+    }
+
+    @Override
+    public int getSearchCount(String boardType, String keyword) {
+        Map<String, String> param = new HashMap<>();
+        param.put("boardType", boardType);
+        param.put("keyword", keyword);
+        return dao.getSearchCount(param);
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 }

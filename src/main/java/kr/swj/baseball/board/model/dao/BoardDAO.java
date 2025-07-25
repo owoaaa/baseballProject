@@ -133,5 +133,29 @@ public class BoardDAO {
     public int updateBoard(Board board) {
         return sqlSession.update("boardMapper.updateBoard", board);
     }
+    
+    
+    // 최근 검색어 5개 조회
+    public List<String> selectRecentSearches(int memberNo) {
+        return sqlSession.selectList("boardMapper.selectRecentSearches", memberNo);
+    }
+    
+    // 검색 기록 저장
+    public int insertSearchHistory(int memberNo, String term) {
+        Map<String, Object> param = new HashMap<>();
+        param.put("memberNo", memberNo);
+        param.put("term", term);
+        return sqlSession.insert("boardMapper.insertSearchHistory", param);
+    }
+
+    // 키워드 기반 게시글 검색
+    public List<Board> searchBoardList(Map<String, Object> param) {
+        return sqlSession.selectList("boardMapper.searchBoardList", param);
+    }
+
+    // 검색 게시글 수 조회
+    public int getSearchCount(Map<String, String> param) {
+        return sqlSession.selectOne("boardMapper.getSearchCount", param);
+    }
 
 }

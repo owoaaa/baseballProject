@@ -30,6 +30,18 @@
       </c:if>
     </div>
 
+    <!-- 검색 입력 위치 조정중-->
+    <div class="relative mb-4 w-full max-w-md">
+      <input id="searchInput" type="text" placeholder="검색어를 입력하세요"
+            class="w-full border px-4 py-2 rounded shadow focus:outline-none"
+            autocomplete="off" />
+
+      <!-- 최근 검색어 리스트 -->
+      <ul id="recentSearchList"
+          class="absolute top-full left-0 w-full bg-white border border-t-0 rounded-b shadow z-10 hidden">
+      </ul>
+    </div>
+
     <!-- 게시글 목록 -->
     <table class="w-full text-sm border border-gray-300">
       <thead class="bg-gray-100 text-center">
@@ -93,6 +105,52 @@
 </main>
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp" />
+
+<script>
+  const searchInput = document.getElementById('searchInput');
+  const recentList = document.getElementById('recentSearchList');
+
+  // 최근 검색어 불러오기
+  searchInput.addEventListener('focus', () => {
+    if (searchInput.value.trim() === '') {
+      fetch('/board/recentSearch')
+        .then(res => res.json())
+        .then(data => {
+          if (data.length === 0) {
+            recentList.classList.add('hidden');
+            return;
+          }
+
+          recentList.innerHTML = data.map(term =>
+            `<li class="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                  onclick="searchTerm('${term}')">${term}</li>`
+          ).join('');
+          recentList.classList.remove('hidden');
+        });
+    }
+  });
+
+  // 외부 클릭 시 닫기
+  document.addEventListener('click', (e) => {
+    if (!searchInput.contains(e.target) && !recentList.contains(e.target)) {
+      recentList.classList.add('hidden');
+    }
+  });
+
+  // 검색어 클릭 시 검색 실행
+  function searchTerm(term) {
+    const url = new URL(window.location.href);
+    url.searchParams.set('keyword', term);
+    location.href = url.toString();
+  }
+
+  // 엔터 검색 시 submit
+  searchInput.addEventListener('keypress', function (e) {
+    if (e.key === 'Enter') {
+      searchTerm(searchInput.value.trim());
+    }
+  });
+</script>
 
 </body>
 </html>
