@@ -36,10 +36,11 @@
             class="w-full border px-4 py-2 rounded shadow focus:outline-none"
             autocomplete="off" />
 
-      <!-- 최근 검색어 리스트 -->
-      <ul id="recentSearchList"
-          class="absolute top-full left-0 w-full bg-white border border-t-0 rounded-b shadow z-10 hidden">
-      </ul>
+      <!-- 최근 검색어 리스트 - 검색창 안으로 다시 넣기 -->
+      <div id="recentSearchList"
+     class="absolute top-full left-0 w-full bg-white border border-t-0 rounded-b shadow z-10"
+     style="display: none;">
+</div>
     </div>
 
     <!-- 게시글 목록 -->
@@ -110,30 +111,60 @@
   const searchInput = document.getElementById('searchInput');
   const recentList = document.getElementById('recentSearchList');
 
-  // 최근 검색어 불러오기
-  searchInput.addEventListener('focus', () => {
-    if (searchInput.value.trim() === '') {
-      fetch('/board/recentSearch')
-        .then(res => res.json())
-        .then(data => {
-          if (data.length === 0) {
-            recentList.classList.add('hidden');
-            return;
-          }
+  // 최근 검색어 불러오기 함수
+  function loadRecentSearch() {
+    fetch('/board/recentSearch')
+      .then(res => res.json())
+      .then(data => {
+        console.log('서버에서 받은 데이터:', data);
+        
+        if (!data || data.length === 0) {
+          recentList.style.display = 'none';
+          return;
+        }
 
-          recentList.innerHTML = data.map(term =>
-            `<li class="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-                  onclick="searchTerm('${term}')">${term}</li>`
-          ).join('');
-          recentList.classList.remove('hidden');
-        });
-    }
+        recentList.innerHTML = '';
+recentList.innerHTML = '';
+data.forEach(term => {
+  const span = document.createElement('span');
+  span.style.cssText = `
+    color: black;
+    padding: 10px;
+    display: block;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+    font-size:14px;
+  `;
+  
+  // 호버 효과
+  span.onmouseover = () => span.style.backgroundColor = '#f8f9fa';
+  span.onmouseout = () => span.style.backgroundColor = '';
+  
+  span.textContent = term;
+  recentList.appendChild(span);
+});
+        recentList.style.display = 'block';
+        console.log('최근 검색어 표시됨:', data);
+      })
+      .catch(error => {
+        console.error('최근 검색어 로딩 실패:', error);
+      });
+}
+
+  // 검색창 포커스 시 최근 검색어 표시
+  searchInput.addEventListener('focus', () => {
+    loadRecentSearch();
+  });
+
+  // 검색창 클릭 시에도 표시
+  searchInput.addEventListener('click', () => {
+    loadRecentSearch();
   });
 
   // 외부 클릭 시 닫기
   document.addEventListener('click', (e) => {
     if (!searchInput.contains(e.target) && !recentList.contains(e.target)) {
-      recentList.classList.add('hidden');
+      recentList.style.display = 'none'; // hidden 대신 display 사용
     }
   });
 
@@ -144,12 +175,23 @@
     location.href = url.toString();
   }
 
-  // 엔터 검색 시 submit
+  // 엔터 검색
   searchInput.addEventListener('keypress', function (e) {
     if (e.key === 'Enter') {
-      searchTerm(searchInput.value.trim());
+      const keyword = searchInput.value.trim();
+      if (keyword) {
+        searchTerm(keyword);
+      }
     }
   });
+
+  document.addEventListener('click', function(e) {
+    if (e.target.getAttribute('data-term')) {
+      const term = e.target.getAttribute('data-term');
+      searchTerm(term);
+    }
+  });
+
 </script>
 
 </body>
