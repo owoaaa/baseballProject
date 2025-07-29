@@ -7,6 +7,7 @@
 <head>
   <meta charset="UTF-8">
   <title>채팅방 목록</title>
+  <link rel="stylesheet" href="/resources/css/style.css">
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-white text-gray-800">
@@ -52,7 +53,7 @@
   </main>
 
   <jsp:include page="/WEB-INF/views/common/footer.jsp" />
-
+  <script src="/resources/js/darkMode.js"></script>
   <script>
     function joinRoom(roomNo) {
         fetch(`/chat/join?roomNo=` + roomNo, {

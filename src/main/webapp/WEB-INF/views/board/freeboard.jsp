@@ -4,6 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <title>자유게시판 - Baseball Community</title>
+  <link rel="stylesheet" href="/resources/css/style.css">
   <script src="https://cdn.tailwindcss.com"></script>
 
   <!-- Grid.js CDN 추가 -->
@@ -33,7 +34,7 @@
     </section>
   </main>
   <jsp:include page="/WEB-INF/views/common/footer.jsp" />
-
+  <script src="/resources/js/darkMode.js"></script>
   <!-- Grid.js 테이블 생성 스크립트 -->
   <script>
     new gridjs.Grid({

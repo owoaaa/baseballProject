@@ -6,6 +6,7 @@
 <head>
   <meta charset="UTF-8">
   <title>게시글 수정</title>
+  <link rel="stylesheet" href="/resources/css/style.css">
   <script src="https://cdn.tailwindcss.com"></script>
 
   <!-- Toast UI Editor -->
@@ -63,7 +64,7 @@
 
 <!-- 공통 푸터 -->
 <jsp:include page="/WEB-INF/views/common/footer.jsp" />
-
+<script src="/resources/js/darkMode.js"></script>
 <!-- Toast UI 초기화 및 전송 -->
 <script>
   const editor = new toastui.Editor({

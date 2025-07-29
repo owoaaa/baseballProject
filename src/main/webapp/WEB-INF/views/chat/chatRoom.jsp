@@ -7,6 +7,7 @@
 <head>
   <meta charset="UTF-8">
   <title>${room.roomName}</title>
+  <link rel="stylesheet" href="/resources/css/style.css">
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
@@ -51,7 +52,7 @@
 
 <c:set var="message" value="" scope="request" />
 <jsp:include page="/WEB-INF/views/common/footer.jsp" />
-
+<script src="/resources/js/darkMode.js"></script>
 <script>
   const messageList = [
     <c:forEach items="${messageList}" var="msg" varStatus="loop">

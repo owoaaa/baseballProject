@@ -5,6 +5,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Baseball Community</title>
+  <link rel="stylesheet" href="/resources/css/style.css">
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-white text-gray-800">

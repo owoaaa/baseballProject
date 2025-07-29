@@ -1,0 +1,848 @@
+/* 기본 body 텍스트 및 배경 */
+body {
+    background-color: white;
+    color: #4a5568;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Header */
+header {
+    background-color: white;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    color: #4a5568;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+header h1 {
+    color: #3b82f6;
+    transition: color 0.3s ease;
+}
+
+header nav .text-sm.text-gray-800 {
+    color: #4a5568;
+}
+header nav a {
+    color: #4a5568;
+}
+header nav a:hover {
+    color: #3b82f6;
+}
+header nav a.hover\\:text-red-500:hover {
+    color: #ef4444;
+}
+#darkModeToggle svg {
+    color: #f59e0b;
+}
+#darkModeToggle:hover {
+    background-color: #edf2f7;
+}
+
+
+/* Main Content (섹션 공통) */
+main h2 {
+    color: #1a202c;
+}
+main p.text-gray-600 {
+    color: #718096;
+}
+main a.inline-block.px-6.py-3.bg-blue-600 {
+    background-color: #3b82f6;
+    color: white;
+    transition: background-color 0.3s ease;
+}
+main a.inline-block.px-6.py-3.bg-blue-600:hover {
+    background-color: #2563eb;
+}
+
+
+/* 채팅방 영역 */
+.flex.overflow-x-auto.space-x-4 .bg-white {
+    background-color: white;
+    color: #4a5568;
+}
+.flex.overflow-x-auto.space-x-4 .border-gray-200 {
+    border-color: #edf2f7;
+}
+.flex.overflow-x-auto.space-x-4 .text-lg.font-semibold {
+    color: #1a202c;
+}
+.flex.overflow-x-auto.space-x-4 .text-sm.text-gray-500 {
+    color: #a0aec0;
+}
+.flex.overflow-x-auto.space-x-4 .text-sm.text-gray-600 {
+    color: #718096;
+}
+.flex.overflow-x-auto.space-x-4 .bg-white:hover {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.text-right.mt-4 a.text-blue-600 {
+    color: #3b82f6;
+}
+.text-right.mt-4 a.text-blue-600:hover {
+    text-decoration: underline;
+}
+
+/* KBO/MLB 순위 테이블 공통 */
+table {
+    border-color: #d1d5db;
+}
+table thead tr {
+    background-color: #f7fafc;
+}
+table th {
+    color: #4a5568;
+}
+table tbody tr {
+    border-color: #e2e8f0;
+}
+table td {
+    color: #4a5568;
+}
+
+/* MLB 리그별 순위 특정 색상 */
+.ranking-box h3.text-blue-700 {
+    color: #2b6cb0;
+}
+.ranking-box h3.text-red-700 {
+    color: #c53030;
+}
+
+
+/* 로그인 모달 */
+#loginModal > div.bg-white {
+    background-color: white;
+    color: #1a202c;
+}
+#loginModal label {
+    color: #4a5568;
+}
+#loginModal input {
+    border-color: #d1d5db;
+}
+#loginModal button[type="submit"] {
+    background-color: #3b82f6;
+    color: white;
+}
+#loginModal button[type="submit"]:hover {
+    background-color: #2563eb;
+}
+#loginModal p.text-red-600 {
+    color: #e53e3e;
+}
+#loginModal button.text-gray-500:hover {
+    color: #4a5568;
+}
+
+
+/* ========================================================== */
+/* 다크 모드 스타일 (html 태그에 'dark-mode' 클래스가 있을 때) */
+/* ========================================================== */
+
+/* 기본 body 텍스트 및 배경 */
+html.dark-mode body {
+    background-color: #1a202c !important;
+    color: #e2e8f0 !important;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Header */
+html.dark-mode header {
+    background-color: #2d3748 !important;
+    box-shadow: 0 1px 2px 0 rgba(255, 255, 255, 0.1) !important;
+    color: #cbd5e0 !important;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+html.dark-mode header h1 {
+    color: #60a5fa !important;
+    transition: color 0.3s ease;
+}
+
+html.dark-mode header nav .text-sm.text-gray-800 {
+    color: #e2e8f0 !important;
+}
+html.dark-mode header nav a {
+    color: #cbd5e0 !important;
+}
+html.dark-mode header nav a:hover {
+    color: #90cdf4 !important;
+}
+html.dark-mode header nav a.hover\\:text-red-500:hover {
+    color: #fc8181 !important;
+}
+html.dark-mode #darkModeToggle:hover {
+    background-color: #4a5568 !important;
+}
+
+/* Main Content (섹션 공통) */
+html.dark-mode main h2 {
+    color: #e2e8f0 !important;
+}
+html.dark-mode main p.text-gray-600 {
+    color: #a0aec0 !important;
+}
+html.dark-mode main a.inline-block.px-6.py-3.bg-blue-600 {
+    background-color: #60a5fa !important;
+    color: #1a202c !important;
+}
+html.dark-mode main a.inline-block.px-6.py-3.bg-blue-600:hover {
+    background-color: #3b82f6 !important;
+}
+
+
+/* 채팅방 영역 */
+html.dark-mode .flex.overflow-x-auto.space-x-4 .bg-white {
+    background-color: #2d3748 !important;
+    color: #e2e8f0 !important;
+}
+html.dark-mode .flex.overflow-x-auto.space-x-4 .border-gray-200 {
+    border-color: #4a5568 !important;
+}
+html.dark-mode .flex.overflow-x-auto.space-x-4 .text-lg.font-semibold {
+    color: #e2e8f0 !important;
+}
+html.dark-mode .flex.overflow-x-auto.space-x-4 .text-sm.text-gray-500 {
+    color: #cbd5e0 !important;
+}
+html.dark-mode .flex.overflow-x-auto.space-x-4 .text-sm.text-gray-600 {
+    color: #a0aec0 !important;
+}
+html.dark-mode .flex.overflow-x-auto.space-x-4 .bg-white:hover {
+    box-shadow: 0 4px 6px -1px rgba(255, 255, 255, 0.1), 0 2px 4px -1px rgba(255, 255, 255, 0.06) !important;
+}
+
+html.dark-mode .text-right.mt-4 a.text-blue-600 {
+    color: #60a5fa !important;
+}
+
+
+/* KBO/MLB 순위 테이블 공통 */
+html.dark-mode table {
+    border-color: #4a5568 !important;
+}
+html.dark-mode table thead tr {
+    background-color: #2d3748 !important;
+}
+html.dark-mode table th {
+    color: #e2e8f0 !important;
+}
+html.dark-mode table tbody tr {
+    border-color: #4a5568 !important;
+}
+html.dark-mode table td {
+    color: #e2e8f0 !important;
+}
+
+/* MLB 리그별 순위 특정 색상 */
+html.dark-mode .ranking-box h3.text-blue-700 {
+    color: #90cdf4 !important;
+}
+html.dark-mode .ranking-box h3.text-red-700 {
+    color: #fc8181 !important;
+}
+
+
+/* 로그인 모달 */
+html.dark-mode #loginModal > div.bg-white {
+    background-color: #2d3748 !important;
+    color: #e2e8f0 !important;
+}
+html.dark-mode #loginModal label {
+    color: #e2e8f0 !important;
+}
+html.dark-mode #loginModal input {
+    background-color: #4a5568 !important;
+    border-color: #a0aec0 !important;
+    color: #e2e8f0 !important;
+}
+html.dark-mode #loginModal button[type="submit"] {
+    background-color: #60a5fa !important;
+    color: #1a202c !important;
+}
+html.dark-mode #loginModal button[type="submit"]:hover {
+    background-color: #3b82f6 !important;
+}
+html.dark-mode #loginModal p.text-red-600 {
+    color: #fc8181 !important;
+}
+html.dark-mode #loginModal button.text-gray-500:hover {
+    color: #e2e8f0 !important;
+}
+
+/* --- 마이페이지 특정 요소 추가/보강 --- */
+
+/* 마이페이지 사이드바 전체 배경 */
+html.dark-mode aside {
+    background-color: #1a202c !important;
+    border-right: 1px solid #4a5568 !important;
+}
+
+/* 마이페이지 사이드바 메뉴 버튼 */
+html.dark-mode aside ul li button.flex.items-center.gap-3.w-full.text-left.px-4.py-2.bg-white.rounded-lg.shadow-sm.hover\:bg-blue-50.transition {
+    background-color: #2d3748 !important;
+    color: #e2e8f0 !important;
+}
+/* 사이드바 "회원 탈퇴" 버튼 */
+html.dark-mode aside ul li button.flex.items-center.gap-3.w-full.text-left.px-4.py-2.rounded-lg.shadow-sm.hover\:bg-red-50.transition {
+    background-color: #2d3748 !important;
+    color: #e2e8f0 !important;
+}
+
+/* 사이드바 "회원 탈퇴" 버튼의 SVG 아이콘과 텍스트 색상 */
+html.dark-mode aside ul li button .text-red-500 {
+    color: #fc8181 !important;
+}
+html.dark-mode aside ul li button .text-red-600 {
+    color: #fc8181 !important;
+}
+
+/* 사이드바 버튼 호버 시 배경색 */
+html.dark-mode aside ul li button.hover\:bg-blue-50:hover {
+    background-color: #2b6cb0 !important;
+    color: #e2e8f0 !important;
+}
+html.dark-mode aside ul li button.hover\:bg-red-50:hover {
+    background-color: #c53030 !important;
+    color: #e2e8f0 !important;
+}
+
+
+/* 마이페이지 메인 콘텐츠 영역 */
+html.dark-mode section.w-3\/4.bg-white.p-6.rounded.shadow-sm.space-y-6 {
+    background-color: #2d3748 !important;
+}
+
+/* 마이페이지 메인 콘텐츠 내부의 각 박스들 */
+
+/* '공지 및 알림' 박스 */
+html.dark-mode div.bg-white.p-4.rounded.shadow-sm.border.border-gray-200 {
+    background-color: #2d3748 !important;
+    border-color: #4a5568 !important;
+}
+/* '공지 및 알림' 박스 내부의 텍스트와 링크 */
+html.dark-mode div.bg-white.p-4.rounded.shadow-sm.border.border-gray-200 a {
+    color: #90cdf4 !important;
+}
+
+/* '회원 정보' 박스 */
+html.dark-mode div.bg-gray-100.p-4.rounded.shadow-sm {
+    background-color: #4a5568 !important;
+}
+/* '회원 정보' 박스 내부 텍스트 */
+html.dark-mode div.bg-gray-100.p-4.rounded.shadow-sm .text-gray-700 {
+    color: #e2e8f0 !important;
+}
+
+
+/* '포인트 및 등급' 박스 */
+html.dark-mode section > div.bg-white.p-4.rounded.shadow-sm.border.border-gray-200:nth-of-type(3) {
+    background-color: #2d3748 !important;
+    border-color: #4a5568 !important;
+}
+/* 포인트 숫자 */
+html.dark-mode div.bg-white.p-4.rounded.shadow-sm.border.border-gray-200 span.text-blue-600 {
+    color: #90cdf4 !important;
+}
+/* 등급 텍스트 */
+html.dark-mode div.bg-white.p-4.rounded.shadow-sm.border.border-gray-200 span.text-green-600 {
+    color: #68d391 !important;
+}
+/* 다음 등급까지 텍스트 */
+html.dark-mode div.bg-white.p-4.rounded.shadow-sm.border.border-gray-200 p.text-gray-500 {
+    color: #a0aec0 !important;
+}
+
+
+/* '최근 활동' 박스 */
+html.dark-mode div.bg-gray-50.p-4.rounded.shadow-sm {
+    background-color: #1a202c !important;
+}
+
+/* 최근 활동 항목 내부 박스 */
+html.dark-mode .p-2.bg-blue-50.border-l-4.border-blue-500.rounded.text-sm {
+    background-color: #2c5282 !important;
+    border-color: #3182ce !important;
+    color: #e2e8f0 !important;
+}
+html.dark-mode .p-2.bg-green-50.border-l-4.border-green-500.rounded.text-sm {
+    background-color: #2f855a !important;
+    border-color: #38a169 !important;
+    color: #e2e8f0 !important;
+}
+/* 최근 활동 항목 내부 링크 텍스트 및 제목 */
+html.dark-mode .p-2.bg-blue-50 strong.text-blue-700 {
+    color: #90cdf4 !important;
+}
+html.dark-mode .p-2.bg-green-50 strong.text-green-700 {
+    color: #68d391 !important;
+}
+html.dark-mode .p-2.bg-green-50 a.text-blue-600 {
+    color: #90cdf4 !important;
+}
+html.dark-mode .p-2.bg-blue-50 span.font-semibold,
+html.dark-mode .p-2.bg-green-50 span.font-semibold {
+    color: #e2e8f0 !important;
+}
+html.dark-mode .p-2.bg-green-50 span.text-gray-600 {
+    color: #a0aec0 !important;
+}
+
+
+/* 마이페이지 내 border-gray-200 요소들 */
+html.dark-mode .border-gray-200 {
+    border-color: #4a5568 !important;
+}
+
+/* 마이페이지 내 테이블 헤더 */
+html.dark-mode table thead.bg-gray-100 {
+    background-color: #4a5568 !important;
+}
+
+/* 마이페이지 내 폼 input/select 요소 */
+html.dark-mode input[type="text"].border-gray-300,
+html.dark-mode input[type="password"].border-gray-300,
+html.dark-mode select.border-gray-300 {
+    background-color: #2d3748 !important;
+    border-color: #4a5568 !important;
+    color: #e2e8f0 !important;
+}
+
+/* 마이페이지 내 체크박스 */
+html.dark-mode input[type="checkbox"].form-checkbox {
+    background-color: #4a5568 !important;
+    border-color: #a0aec0 !important;
+}
+
+/* 진행 바 (h-4) */
+html.dark-mode .w-full.bg-gray-200.rounded-full.h-4 {
+    background-color: #4a5568 !important;
+}
+html.dark-mode .bg-blue-500.h-4.rounded-full {
+    background-color: #60a5fa !important;
+}
+/* 포인트 내역 섹션의 진행 바 (h-5) */
+html.dark-mode .w-full.bg-gray-200.rounded-full.h-5 {
+    background-color: #4a5568 !important;
+}
+html.dark-mode .bg-blue-500.h-5.rounded-full {
+    background-color: #60a5fa !important;
+}
+
+
+/* 기타 텍스트 색상들 */
+html.dark-mode .text-gray-800 { color: #e2e8f0 !important; }
+html.dark-mode .text-gray-700 { color: #cbd5e0 !important; }
+html.dark-mode .text-gray-600 { color: #a0aec0 !important; }
+html.dark-mode .text-gray-500 { color: #a0aec0 !important; }
+html.dark-mode .text-blue-600 { color: #90cdf4 !important; }
+html.dark-mode .text-red-600 { color: #fc8181 !important; }
+
+/* 회원 탈퇴 약관 박스 */
+html.dark-mode .mb-4.p-4.bg-gray-100.border.rounded.text-sm {
+    background-color: #4a5568 !important;
+    border-color: #6b7280 !important;
+    color: #e2e8f0 !important;
+}
+html.dark-mode .mb-4.p-4.bg-gray-100.border.rounded.text-sm p.font-semibold {
+    color: #e2e8f0 !important;
+}
+html.dark-mode .mb-4.p-4.bg-gray-100.border.rounded.text-sm p {
+    color: #cbd5e0 !important;
+}
+
+/* 회원 탈퇴 동의 체크박스 텍스트 */
+html.dark-mode label.inline-flex.items-center span.text-sm {
+    color: #e2e8f0 !important;
+}
+
+/* 회원 탈퇴 입력 필드 */
+html.dark-mode input[type="password"]#currentPassword {
+    background-color: #2d3748 !important;
+    border-color: #4a5568 !important;
+    color: #e2e8f0 !important;
+}
+
+/* 회원 탈퇴 버튼 */
+html.dark-mode button#withdrawBtn.px-6.py-2.bg-red-500.text-white.rounded {
+    background-color: #e53e3e !important;
+    color: white !important;
+}
+html.dark-mode button#withdrawBtn.opacity-50.cursor-not-allowed {
+    background-color: #e53e3e !important;
+    opacity: 0.5 !important;
+}
+
+/* 푸터 */
+html.dark-mode footer {
+    background-color: #2d3748 !important;
+    color: #a0aec0 !important;
+}
+
+/* 플래시 메시지 */
+html.dark-mode #flashMessage.bg-green-100 {
+    background-color: #2d3748 !important;
+    color: #68d391 !important;
+    border: 1px solid #48bb78 !important;
+}
+
+html.dark-mode #flashMessage.bg-red-100 {
+    background-color: #2d3748 !important;
+    color: #fc8181 !important;
+    border: 1px solid #e53e3e !important;
+}
+
+/* Grid.js 다크 모드 스타일 */
+html.dark-mode .gridjs-container {
+    background-color: #2d3748 !important;
+    color: #e2e8f0 !important;
+    border-color: #4a5568 !important;
+}
+
+html.dark-mode .gridjs-wrapper {
+    background-color: #2d3748 !important;
+}
+
+html.dark-mode .gridjs-table {
+    background-color: #2d3748 !important;
+    color: #e2e8f0 !important;
+}
+
+html.dark-mode .gridjs-th {
+    background-color: #4a5568 !important;
+    color: #e2e8f0 !important;
+    border-color: #4a5568 !important;
+}
+html.dark-mode .gridjs-thead {
+    background-color: #4a5568 !important;
+}
+html.dark-mode .gridjs-th .gridjs-sort-icon {
+    filter: invert(1);
+}
+
+html.dark-mode .gridjs-td {
+    background-color: #2d3748 !important;
+    color: #e2e8f0 !important;
+    border-color: #4a5568 !important;
+}
+
+html.dark-mode .gridjs-tr:hover {
+    background-color: #3b4555 !important;
+}
+
+html.dark-mode .gridjs-search-input {
+    background-color: #4a5568 !important;
+    border-color: #6b7280 !important;
+    color: #e2e8f0 !important;
+}
+
+html.dark-mode .gridjs-footer {
+    background-color: #2d3748 !important;
+    border-top-color: #4a5568 !important;
+}
+html.dark-mode .gridjs-pagination .gridjs-pages button {
+    background-color: #4a5568 !important;
+    color: #e2e8f0 !important;
+    border-color: #6b7280 !important;
+}
+html.dark-mode .gridjs-pagination .gridjs-pages button:hover:not(.gridjs-currentPage) {
+    background-color: #6b7280 !important;
+}
+html.dark-mode .gridjs-pagination .gridjs-pages .gridjs-currentPage {
+    background-color: #60a5fa !important;
+    color: white !important;
+    border-color: #60a5fa !important;
+}
+html.dark-mode .gridjs-pagination .gridjs-pages button.gridjs-disabled {
+    background-color: #2d3748 !important;
+    color: #a0aec0 !important;
+    border-color: #4a5568 !important;
+    cursor: not-allowed;
+}
+html.dark-mode .gridjs-pagination .gridjs-pages button.gridjs-disabled .gridjs-svg {
+    filter: invert(0.5);
+}
+
+html.dark-mode .gridjs-spinner {
+    border-left-color: #60a5fa !important;
+}
+
+html.dark-mode .gridjs-no-records {
+    background-color: #2d3748 !important;
+    color: #e2e8f0 !important;
+}
+
+html.dark-mode .gridjs-summary {
+    color: #e2e8f0 !important;
+}
+
+
+/* --- Toast UI Editor 다크 모드 스타일 --- */
+
+/* 에디터 전체 배경 및 테두리 */
+html.dark-mode .toastui-editor-defaultUI {
+    background-color: #2d3748 !important;
+    border-color: #4a5568 !important;
+}
+
+/* 툴바 배경 */
+html.dark-mode .toastui-editor-toolbar {
+    background-color: #2d3748 !important;
+    border-bottom-color: #4a5568 !important;
+}
+
+/* 툴바 아이콘 및 텍스트 (기본 색상) */
+html.dark-mode .toastui-editor-toolbar button {
+    color: #e2e8f0 !important;
+}
+
+/* 툴바 아이콘 SVG (색상 반전 또는 직접 지정) */
+html.dark-mode .toastui-editor-toolbar button .toastui-editor-toolbar-icons {
+    filter: invert(1) hue-rotate(180deg) brightness(1.5);
+}
+
+/* 툴바 버튼 호버 시 */
+html.dark-mode .toastui-editor-toolbar button:hover {
+    background-color: #4a5568 !important;
+    color: #60a5fa !important;
+}
+html.dark-mode .toastui-editor-toolbar button:hover .toastui-editor-toolbar-icons {
+    filter: invert(0.8) sepia(1) saturate(5) hue-rotate(175deg) brightness(1.2);
+}
+
+/* 드롭다운 메뉴 배경 (예: 헤딩, 목록) */
+html.dark-mode .toastui-editor-dropdown-toolbar {
+    background-color: #2d3748 !important;
+    border-color: #4a5568 !important;
+}
+html.dark-mode .toastui-editor-dropdown-toolbar li button {
+    color: #e2e8f0 !important;
+}
+html.dark-mode .toastui-editor-dropdown-toolbar li button:hover {
+    background-color: #4a5568 !important;
+}
+
+
+/* 탭 메뉴 (Write/Preview/Markdown) */
+html.dark-mode .toastui-editor-mode-switch .tab-item {
+    color: #a0aec0 !important;
+    background-color: #2d3748 !important;
+}
+html.dark-mode .toastui-editor-mode-switch .tab-item.active {
+    color: #e2e8f0 !important;
+    border-color: #60a5fa !important;
+    background-color: #1a202c !important;
+}
+html.dark-mode .toastui-editor-mode-switch .tab-item:hover {
+    background-color: #4a5568 !important;
+}
+
+/* 에디터 본문 (쓰기 영역) - 글씨 안 보이는 문제 해결 */
+/* 내용이 렌더링되는 실제 컨테이너의 텍스트 색상을 더 강력하게 강제 지정 */
+html.dark-mode .toastui-editor-md-container,
+html.dark-mode .toastui-editor-md-container .toastui-editor-contents,
+html.dark-mode .toastui-editor-md-container .toastui-editor-contents *,
+html.dark-mode .toastui-editor-ww-container,
+html.dark-mode .toastui-editor-ww-container .toastui-editor-contents,
+html.dark-mode .toastui-editor-ww-container .toastui-editor-contents *,
+html.dark-mode .toastui-editor-contents p,
+html.dark-mode .toastui-editor-contents span,
+html.dark-mode .toastui-editor-contents div,
+html.dark-mode .toastui-editor-contents pre,
+html.dark-mode .toastui-editor-contents code,
+html.dark-mode .toastui-editor-contents li,
+html.dark-mode .ProseMirror { /* 이 부분을 추가하여 ProseMirror 클래스에 직접 적용 */
+    background-color: #1a202c !important; /* 본문 배경 */
+    color: #e2e8f0 !important; /* 본문 텍스트 색상 (밝은 색으로 강제) */
+}
+
+/* 코드 블록 */
+html.dark-mode pre.toastui-editor-md-code-block,
+html.dark-mode pre.toastui-editor-ww-code-block {
+    background-color: #2d3748 !important;
+    color: #e2e8f0 !important;
+    border-color: #4a5568 !important;
+}
+html.dark-mode pre.toastui-editor-md-code-block code,
+html.dark-mode pre.toastui-editor-ww-code-block code {
+    color: #e2e8f0 !important; /* 코드 블록 내부 텍스트 색상 */
+}
+
+
+/* 인용문 (blockquote) */
+html.dark-mode blockquote {
+    color: #a0aec0 !important;
+    border-left-color: #60a5fa !important;
+    background-color: #2d3748 !important;
+}
+
+/* 링크 (anchor) */
+html.dark-mode a {
+    color: #90cdf4 !important;
+}
+
+/* 헤딩 요소 (H1, H2, H3 등) */
+html.dark-mode .toastui-editor-contents h1,
+html.dark-mode .toastui-editor-contents h2,
+html.dark-mode .toastui-editor-contents h3,
+html.dark-mode .toastui-editor-contents h4,
+html.dark-mode .toastui-editor-contents h5,
+html.dark-mode .toastui-editor-contents h6 {
+    color: #e2e8f0 !important;
+}
+
+/* 리스트 항목 (ul, ol) */
+html.dark-mode .toastui-editor-contents ul li,
+html.dark-mode .toastui-editor-contents ol li {
+    color: #e2e8f0 !important;
+}
+
+/* 테이블 테두리 (에디터 내에서) */
+html.dark-mode .toastui-editor-contents table {
+    border-color: #4a5568 !important;
+}
+html.dark-mode .toastui-editor-contents th,
+html.dark-mode .toastui-editor-contents td {
+    border-color: #4a5568 !important;
+    color: #e2e8f0 !important;
+}
+html.dark-mode .toastui-editor-contents th {
+    background-color: #4a5568 !important;
+}
+
+/* 스크롤바 (커스텀 필요 시) */
+/* 에디터 내부 스크롤바 - Webkit 기반 브라우저 */
+html.dark-mode .toastui-editor-md-container ::-webkit-scrollbar,
+html.dark-mode .toastui-editor-ww-container ::-webkit-scrollbar {
+  width: 10px;
+}
+html.dark-mode .toastui-editor-md-container ::-webkit-scrollbar-track,
+html.dark-mode .toastui-editor-ww-container ::-webkit-scrollbar-track {
+  background: #2d3748; /* 스크롤바 트랙 배경 */
+}
+html.dark-mode .toastui-editor-md-container ::-webkit-scrollbar-thumb,
+html.dark-mode .toastui-editor-ww-container ::-webkit-scrollbar-thumb {
+  background: #60a5fa; /* 스크롤바 썸 색상 */
+  border-radius: 5px;
+}
+html.dark-mode .toastui-editor-md-container ::-webkit-scrollbar-thumb:hover,
+html.dark-mode .toastui-editor-ww-container ::-webkit-scrollbar-thumb:hover {
+  background: #3b82f6; /* 스크롤바 썸 호버 색상 */
+}
+
+/* 폼 요소 (select, input) */
+html.dark-mode #boardType,
+html.dark-mode #boardTitle {
+    background-color: #2d3748 !important;
+    color: #e2e8f0 !important;
+    border-color: #4a5568 !important;
+}
+html.dark-mode #boardType option {
+    background-color: #2d3748 !important;
+    color: #e2e8f0 !important;
+}
+
+제공해주신 mlb_stats.jsp 코드를 확인했습니다. Tabulator 테이블에 다크 모드 스타일이 적용되지 않는 문제로 이해했습니다. 이는 style.css에서 Tabulator에 필요한 다크 모드 스타일이 정의되지 않았기 때문입니다.
+
+Tabulator는 자체적인 클래스 구조를 가지고 있기 때문에, 이 클래스들에 맞춰 다크 모드 스타일을 추가해야 합니다.
+
+/resources/css/style.css 파일에서 /* Grid.js 다크 모드 스타일 */ 주석 아래 또는 파일의 맨 마지막에 다음 CSS 코드를 추가해 주세요.
+
+CSS
+
+/* --- Tabulator 다크 모드 스타일 --- */
+
+/* 테이블 컨테이너 */
+html.dark-mode .tabulator {
+    background-color: #2d3748 !important; /* 배경색 */
+    border: 1px solid #4a5568 !important; /* 테두리 */
+    color: #e2e8f0 !important; /* 기본 텍스트 색상 */
+}
+
+/* 테이블 헤더 */
+html.dark-mode .tabulator .tabulator-header {
+    background-color: #4a5568 !important; /* 헤더 배경색 */
+    border-bottom: 1px solid #6b7280 !important; /* 헤더 하단 테두리 */
+}
+
+/* 헤더 셀 */
+html.dark-mode .tabulator .tabulator-header .tabulator-col {
+    background-color: #4a5568 !important; /* 헤더 셀 배경색 */
+    color: #e2e8f0 !important; /* 헤더 텍스트 색상 */
+    border-right: 1px solid #6b7280 !important; /* 헤더 셀 오른쪽 테두리 */
+}
+
+/* 헤더 셀 호버 */
+html.dark-mode .tabulator .tabulator-header .tabulator-col.tabulator-sortable:hover {
+    background-color: #5a6270 !important; /* 헤더 셀 호버 배경색 */
+}
+
+/* 정렬 아이콘 */
+html.dark-mode .tabulator .tabulator-header .tabulator-col .tabulator-arrow {
+    border-top-color: #e2e8f0 !important; /* 정렬 화살표 색상 */
+}
+
+/* 테이블 본문 */
+html.dark-mode .tabulator .tabulator-tableholder {
+    background-color: #2d3748 !important; /* 테이블 본문 배경색 */
+}
+
+/* 로우 (행) */
+html.dark-mode .tabulator .tabulator-row {
+    background-color: #2d3748 !important; /* 로우 기본 배경색 */
+    color: #e2e8f0 !important; /* 로우 텍스트 색상 */
+    border-bottom: 1px solid #4a5568 !important; /* 로우 하단 테두리 */
+}
+
+/* 로우 호버 시 */
+html.dark-mode .tabulator .tabulator-row.tabulator-row-even:hover,
+html.dark-mode .tabulator .tabulator-row.tabulator-row-odd:hover,
+html.dark-mode .tabulator .tabulator-row:hover {
+    background-color: #3b4555 !important; /* 로우 호버 배경색 */
+}
+
+/* 선택된 로우 */
+html.dark-mode .tabulator .tabulator-row.tabulator-selected {
+    background-color: #3182ce !important; /* 선택된 로우 배경색 */
+    color: white !important; /* 선택된 로우 텍스트 색상 */
+}
+
+/* 셀 */
+html.dark-mode .tabulator .tabulator-cell {
+    border-right: 1px solid #4a5568 !important; /* 셀 오른쪽 테두리 */
+}
+
+/* 빈 데이터 메시지 */
+html.dark-mode .tabulator-placeholder {
+    background-color: #2d3748 !important;
+    color: #a0aec0 !important;
+}
+
+/* 필터 입력 필드 (검색창, 숫자 필터) */
+html.dark-mode input[type="text"].border.border-gray-300,
+html.dark-mode input[type="number"].border.px-2.py-1.rounded.w-20 {
+    background-color: #4a5568 !important;
+    border-color: #6b7280 !important;
+    color: #e2e8f0 !important;
+}
+html.dark-mode input[type="text"].border.border-gray-300::placeholder,
+html.dark-mode input[type="number"].border.px-2.py-1.rounded.w-20::placeholder {
+    color: #a0aec0 !important;
+}
+
+/* 필터 버튼 */
+html.dark-mode #apply-filter {
+    background-color: #60a5fa !important;
+    color: #1a202c !important;
+}
+html.dark-mode #apply-filter:hover {
+    background-color: #3b82f6 !important;
+}
+
+html.dark-mode #reset-filter {
+    background-color: #6b7280 !important;
+    color: #e2e8f0 !important;
+}
+html.dark-mode #reset-filter:hover {
+    background-color: #4a5568 !important;
+}

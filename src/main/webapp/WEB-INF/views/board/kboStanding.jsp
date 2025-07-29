@@ -1,6 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<link rel="stylesheet" href="/resources/css/style.css">
 
 <div class="ranking-box">
   <h2 class="text-2xl font-bold mb-6">KBO 순위</h2>
@@ -33,3 +34,5 @@
         </tbody>
     </table>
 </div>
+
+<script src="/resources/js/darkMode.js"></script>

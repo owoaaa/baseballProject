@@ -8,6 +8,7 @@
 <head>
   <meta charset="UTF-8">
   <title>게시글 상세보기</title>
+  <link rel="stylesheet" href="/resources/css/style.css">
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-white text-gray-800">
@@ -102,7 +103,7 @@
 
     <!-- boardNo를 자바스크립트에서 사용할 수 있도록 hidden input으로 전달 -->
     <input type="hidden" id="boardNo" value="${board.boardNo}" />
-
+    <script src="/resources/js/darkMode.js"></script>
     <script>
     // 좋아요 버튼 처리
     document.getElementById("likeBtn").addEventListener("click", () => {

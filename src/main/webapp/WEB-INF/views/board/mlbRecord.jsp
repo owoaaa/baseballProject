@@ -6,6 +6,7 @@
 <head>
   <meta charset="UTF-8">
   <title>MLB Player Stats</title>
+  <link rel="stylesheet" href="/resources/css/style.css">
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://unpkg.com/tabulator-tables@5.4.4/dist/css/tabulator.min.css" rel="stylesheet">
   <script src="https://unpkg.com/tabulator-tables@5.4.4/dist/js/tabulator.min.js"></script>
@@ -38,6 +39,7 @@
     </section>
   </main>
     <jsp:include page="/WEB-INF/views/common/footer.jsp" />
+    <script src="/resources/js/darkMode.js"></script>
 <script>
   const tableData = [
     <c:forEach var="p" items="${mlbList}" varStatus="status">

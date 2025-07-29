@@ -29,7 +29,7 @@
   </main>
 
   <jsp:include page="/WEB-INF/views/common/footer.jsp" />
-
+  <script src="/resources/js/darkMode.js"></script>
   <script>
     const hitterData = ${kboHittersJson};
     const pitcherData = ${kboPitchersJson};

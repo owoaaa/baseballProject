@@ -1,6 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<link rel="stylesheet" href="/resources/css/style.css">
 
 <!-- MLB 리그별 순위 -->
 <div class="ranking-box">
@@ -68,3 +69,5 @@
     </div>
   </div>
 </div>
+
+<script src="/resources/js/darkMode.js"></script>

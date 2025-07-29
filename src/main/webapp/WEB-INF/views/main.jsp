@@ -6,6 +6,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Baseball Community</title>
+  <link rel="stylesheet" href="/resources/css/style.css">
   <script src="https://cdn.tailwindcss.com"></script>
 
   <!-- 채팅방 스크롤바 보조 스타일 -->
@@ -195,6 +196,7 @@
   </div>
 
   <jsp:include page="/WEB-INF/views/common/footer.jsp" />
+  <script src="/resources/js/darkMode.js"></script>
   <script>
   function openModal() {
     document.getElementById('loginModal').classList.remove('hidden');

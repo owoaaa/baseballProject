@@ -5,6 +5,7 @@
 <head>
   <meta charset="UTF-8">
   <title>회원가입 - Baseball Community</title>
+  <link rel="stylesheet" href="/resources/css/style.css">
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
@@ -180,6 +181,6 @@
 
   <!-- 푸터 -->
   <jsp:include page="/WEB-INF/views/common/footer.jsp" />
-
+  <script src="/resources/js/darkMode.js"></script>
 </body>
 </html>

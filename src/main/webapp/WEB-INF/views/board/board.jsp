@@ -7,6 +7,7 @@
 <head>
   <meta charset="UTF-8">
   <title>${boardType} 게시판</title>
+  <link rel="stylesheet" href="/resources/css/style.css">
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-white text-gray-800">
@@ -106,91 +107,101 @@
 </main>
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp" />
-
+<script src="/resources/js/darkMode.js"></script>
 <script>
-  const searchInput = document.getElementById('searchInput');
-  const recentList = document.getElementById('recentSearchList');
+    const searchInput = document.getElementById('searchInput');
+    const recentList = document.getElementById('recentSearchList');
 
-  // 최근 검색어 불러오기 함수
-  function loadRecentSearch() {
-    fetch('/board/recentSearch')
-      .then(res => res.json())
-      .then(data => {
-        console.log('서버에서 받은 데이터:', data);
-        
-        if (!data || data.length === 0) {
-          recentList.style.display = 'none';
-          return;
+    // 최근 검색어 불러오기 함수
+    function loadRecentSearch() {
+        fetch('/board/recentSearch')
+            .then(res => res.json())
+            .then(data => {
+                console.log('서버에서 받은 데이터:', data);
+
+                if (!data || data.length === 0) {
+                    recentList.style.display = 'none';
+                    return;
+                }
+
+                // 기존 내용 초기화 (한 번만)
+                recentList.innerHTML = ''; 
+                
+                data.forEach(term => {
+                    const span = document.createElement('span');
+                    span.style.cssText = `
+                        color: black;
+                        padding: 10px;
+                        display: block;
+                        border-bottom: 1px solid #eee;
+                        cursor: pointer;
+                        font-size:14px;
+                    `;
+                    
+                    // 호버 효과
+                    span.onmouseover = () => span.style.backgroundColor = '#f8f9fa';
+                    span.onmouseout = () => span.style.backgroundColor = '';
+                    
+                    span.textContent = term;
+                    // !!! 중요: data-term 속성 추가 !!!
+                    span.setAttribute('data-term', term); 
+                    
+                    recentList.appendChild(span);
+                });
+                recentList.style.display = 'block';
+                console.log('최근 검색어 표시됨:', data);
+            })
+            .catch(error => {
+                console.error('최근 검색어 로딩 실패:', error);
+            });
+    }
+
+    // 검색창 포커스 시 최근 검색어 표시
+    searchInput.addEventListener('focus', () => {
+        loadRecentSearch();
+    });
+
+    // 검색창 클릭 시에도 표시 (focus 이벤트와 중복될 수 있으나, 명시적으로 유지)
+    searchInput.addEventListener('click', () => {
+        loadRecentSearch();
+    });
+
+    // 외부 클릭 시 닫기
+    document.addEventListener('click', (e) => {
+        if (!searchInput.contains(e.target) && !recentList.contains(e.target)) {
+            recentList.style.display = 'none';
         }
+    });
 
-        recentList.innerHTML = '';
-recentList.innerHTML = '';
-data.forEach(term => {
-  const span = document.createElement('span');
-  span.style.cssText = `
-    color: black;
-    padding: 10px;
-    display: block;
-    border-bottom: 1px solid #eee;
-    cursor: pointer;
-    font-size:14px;
-  `;
-  
-  // 호버 효과
-  span.onmouseover = () => span.style.backgroundColor = '#f8f9fa';
-  span.onmouseout = () => span.style.backgroundColor = '';
-  
-  span.textContent = term;
-  recentList.appendChild(span);
-});
-        recentList.style.display = 'block';
-        console.log('최근 검색어 표시됨:', data);
-      })
-      .catch(error => {
-        console.error('최근 검색어 로딩 실패:', error);
-      });
-}
-
-  // 검색창 포커스 시 최근 검색어 표시
-  searchInput.addEventListener('focus', () => {
-    loadRecentSearch();
-  });
-
-  // 검색창 클릭 시에도 표시
-  searchInput.addEventListener('click', () => {
-    loadRecentSearch();
-  });
-
-  // 외부 클릭 시 닫기
-  document.addEventListener('click', (e) => {
-    if (!searchInput.contains(e.target) && !recentList.contains(e.target)) {
-      recentList.style.display = 'none'; // hidden 대신 display 사용
+    // 검색어 클릭 또는 엔터 시 검색 실행
+    function searchTerm(term) {
+        const url = new URL(window.location.href);
+        url.searchParams.set('keyword', term);
+        // 현재 페이지의 boardType을 유지하기 위해 query string에 추가
+        url.searchParams.set('type', '${boardType}'); 
+        location.href = url.toString();
     }
-  });
 
-  // 검색어 클릭 시 검색 실행
-  function searchTerm(term) {
-    const url = new URL(window.location.href);
-    url.searchParams.set('keyword', term);
-    location.href = url.toString();
-  }
+    // 엔터 검색
+    searchInput.addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') {
+            const keyword = searchInput.value.trim();
+            if (keyword) {
+                searchTerm(keyword);
+            }
+        }
+    });
 
-  // 엔터 검색
-  searchInput.addEventListener('keypress', function (e) {
-    if (e.key === 'Enter') {
-      const keyword = searchInput.value.trim();
-      if (keyword) {
-        searchTerm(keyword);
-      }
-    }
-  });
-
-  document.addEventListener('click', function(e) {
-    if (e.target.getAttribute('data-term')) {
-      const term = e.target.getAttribute('data-term');
-      searchTerm(term);
-    }
-  });
+    // 최근 검색어 클릭 시 검색 실행
+    document.addEventListener('click', function(e) {
+        // data-term 속성을 가진 요소가 클릭되었는지 확인
+        if (e.target.hasAttribute('data-term')) { 
+            const term = e.target.getAttribute('data-term');
+            searchTerm(term);
+            recentList.style.display = 'none'; // 검색 후 목록 숨기기
+            searchInput.value = term; // 검색어 입력창에 해당 검색어 채우기
+        }
+    });
 
 </script>
 

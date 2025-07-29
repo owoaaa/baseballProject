@@ -1,4 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<link rel="stylesheet" href="/resources/css/style.css">
 <aside class="md:col-span-1 space-y-4">
   <h2 class="text-lg font-bold text-gray-700">📋 게시판</h2>
   <ul class="space-y-2 text-sm text-gray-700">
