@@ -637,7 +637,7 @@ html.dark-mode .toastui-editor-mode-switch .tab-item:hover {
     background-color: #4a5568 !important;
 }
 
-/* 에디터 본문 (쓰기 영역) - 글씨 안 보이는 문제 해결 */
+/* 에디터 본문 (쓰기 영역) - 글씨 안 보이는 문제 해결용 */
 /* 내용이 렌더링되는 실제 컨테이너의 텍스트 색상을 더 강력하게 강제 지정 */
 html.dark-mode .toastui-editor-md-container,
 html.dark-mode .toastui-editor-md-container .toastui-editor-contents,
@@ -651,7 +651,7 @@ html.dark-mode .toastui-editor-contents div,
 html.dark-mode .toastui-editor-contents pre,
 html.dark-mode .toastui-editor-contents code,
 html.dark-mode .toastui-editor-contents li,
-html.dark-mode .ProseMirror { /* 이 부분을 추가하여 ProseMirror 클래스에 직접 적용 */
+html.dark-mode .ProseMirror {
     background-color: #1a202c !important; /* 본문 배경 */
     color: #e2e8f0 !important; /* 본문 텍스트 색상 (밝은 색으로 강제) */
 }
@@ -741,14 +741,6 @@ html.dark-mode #boardType option {
     background-color: #2d3748 !important;
     color: #e2e8f0 !important;
 }
-
-제공해주신 mlb_stats.jsp 코드를 확인했습니다. Tabulator 테이블에 다크 모드 스타일이 적용되지 않는 문제로 이해했습니다. 이는 style.css에서 Tabulator에 필요한 다크 모드 스타일이 정의되지 않았기 때문입니다.
-
-Tabulator는 자체적인 클래스 구조를 가지고 있기 때문에, 이 클래스들에 맞춰 다크 모드 스타일을 추가해야 합니다.
-
-/resources/css/style.css 파일에서 /* Grid.js 다크 모드 스타일 */ 주석 아래 또는 파일의 맨 마지막에 다음 CSS 코드를 추가해 주세요.
-
-CSS
 
 /* --- Tabulator 다크 모드 스타일 --- */
 
@@ -845,4 +837,98 @@ html.dark-mode #reset-filter {
 }
 html.dark-mode #reset-filter:hover {
     background-color: #4a5568 !important;
+}
+
+/* --- 채팅방 페이지 다크 모드 스타일 --- */
+
+/* 채팅 영역 전체 컨테이너 */
+html.dark-mode section.md\:col-span-3.space-y-4.bg-white.rounded.shadow.p-4 {
+    background-color: #2d3748 !important; /* 채팅 영역 배경색 */
+    color: #e2e8f0 !important; /* 기본 텍스트 색상 */
+}
+
+/* 채팅방 제목 */
+html.dark-mode h2.text-2xl.font-bold {
+    color: #e2e8f0 !important; /* 제목 텍스트 색상 */
+}
+
+/* 채팅방 목록으로 버튼 */
+html.dark-mode a.px-4.py-2.bg-blue-600.text-white.text-sm.rounded.hover\:bg-blue-700 {
+    background-color: #60a5fa !important;
+    color: #1a202c !important;
+}
+html.dark-mode a.px-4.py-2.bg-blue-600.text-white.text-sm.rounded.hover\:bg-blue-700:hover {
+    background-color: #3b82f6 !important;
+}
+
+/* 나가기 버튼 */
+html.dark-mode button.px-4.py-2.text-sm.bg-gray-200.text-gray-800.rounded.hover\:bg-gray-300 {
+    background-color: #4a5568 !important;
+    color: #e2e8f0 !important;
+}
+html.dark-mode button.px-4.py-2.text-sm.bg-gray-200.text-gray-800.rounded.hover\:bg-gray-300:hover {
+    background-color: #6b7280 !important;
+}
+
+/* 채팅 메시지 표시 영역 */
+html.dark-mode #chatArea {
+    background-color: #1a202c !important; /* 채팅 배경색 */
+    border-color: #4a5568 !important; /* 테두리 색상 */
+    color: #e2e8f0 !important; /* 기본 메시지 텍스트 색상 (만약 직접 지정되지 않았을때 대비용) */
+}
+
+/* 메시지 입력 필드 */
+html.dark-mode #messageInput {
+    background-color: #2d3748 !important; /* 입력 필드 배경색 */
+    border-color: #4a5568 !important; /* 입력 필드 테두리 색상 */
+    color: #e2e8f0 !important; /* 입력 필드 텍스트 색상 */
+}
+html.dark-mode #messageInput::placeholder {
+    color: #a0aec0 !important; /* 플레이스홀더 텍스트 색상 */
+}
+
+/* 전송 버튼 */
+html.dark-mode button[type="submit"].bg-blue-600 {
+    background-color: #60a5fa !important;
+    color: #1a202c !important;
+}
+html.dark-mode button[type="submit"].bg-blue-600:hover {
+    background-color: #3b82f6 !important;
+}
+
+/* --- 채팅 메시지 개별 스타일 --- */
+
+/* 날짜 구분선 (JS에서 인라인 스타일로 추가됨) */
+html.dark-mode div[style*="text-align: center; margin: 20px 0 10px 0;"] span[style*="background-color: #f3f4f6;"] {
+    background-color: #4a5568 !important; /* 날짜 배경색 */
+    color: #e2e8f0 !important; /* 날짜 텍스트 색상 */
+}
+
+/* 시스템 메시지 (JS에서 인라인 스타일로 추가됨) */
+html.dark-mode div[style*="text-align: center; margin: 8px 0;"] span[style*="background-color: #e5e7eb;"] {
+    background-color: #4a5568 !important; /* 시스템 메시지 배경색 */
+    color: #e2e8f0 !important; /* 시스템 메시지 텍스트 색상 */
+}
+
+/* 상대방 메시지 버블 (JS에서 인라인 스타일로 추가됨) */
+html.dark-mode div[style*="background-color: #f1f3f4;"] {
+    background-color: #4a5568 !important; /* 상대방 메시지 버블 배경색 */
+    color: #e2e8f0 !important; /* 상대방 메시지 버블 텍스트 색상 */
+}
+
+/* 내 메시지 버블 (JS에서 인라인 스타일로 추가됨) */
+html.dark-mode div[style*="background-color: #007bff;"] {
+    background-color: #3b82f6 !important; /* 내 메시지 버블 배경색 (기존 파란색보다 살짝 어둡게) */
+    color: white !important; /* 내 메시지 버블 텍스트 색상 */
+}
+
+/* 메시지 버블 내부의 텍스트와 시간/닉네임 색상 */
+/* 닉네임 (상대방 메시지) */
+html.dark-mode div[style*="font-size: 12px; color: #666;"] {
+    color: #a0aec0 !important; /* 닉네임 텍스트 색상 */
+}
+
+/* 메시지 시간 */
+html.dark-mode div[style*="font-size: 10px; color: #999;"] {
+    color: #a0aec0 !important; /* 시간 텍스트 색상 */
 }
