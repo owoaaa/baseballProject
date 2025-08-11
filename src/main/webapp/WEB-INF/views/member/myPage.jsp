@@ -304,6 +304,8 @@
             </form>
         </div>
 
+        <!-- 수정 -->
+
         <div id="changePw" class="content-section hidden">비밀번호 변경</div>
         <div id="myPosts" class="content-section hidden">
             <h3 class="text-lg font-semibold mb-3">내가 쓴 글</h3>
